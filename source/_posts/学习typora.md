@@ -1,7 +1,7 @@
 ---
 title: 学习typora
 date: 2022-05-26 16:30:12
-tags: 
+categories: 
 - 其他
 ---
 
