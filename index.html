@@ -127,7 +127,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -162,6 +162,110 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://stubird.top/2022/06/08/%E5%BC%95%E7%94%A8%E7%9A%84%E5%85%B6%E4%BB%96%E7%94%A8%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bya">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="C++成长之路">
+      <meta itemprop="description" content="记录我的C++学习历程">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | C++成长之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/06/08/%E5%BC%95%E7%94%A8%E7%9A%84%E5%85%B6%E4%BB%96%E7%94%A8%E6%B3%95/" class="post-title-link" itemprop="url">引用的其他用法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-06-08 16:01:07 / 修改时间：18:09:33" itemprop="dateCreated datePublished" datetime="2022-06-08T16:01:07+08:00">2022-06-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="引用的其他用法"><a href="#引用的其他用法" class="headerlink" title="引用的其他用法"></a>引用的其他用法</h1><h2 id="引用做函数的返回值"><a href="#引用做函数的返回值" class="headerlink" title="引用做函数的返回值"></a>引用做函数的返回值</h2><h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ul>
+<li>不能用局部变量作为引用的返回值</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span>&amp; <span class="title">test01</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> a = <span class="number">10</span>;<span class="comment">//局部变量，存放在四区中的栈区</span></span><br><span class="line">	<span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> &amp;ref = <span class="built_in">test01</span>();</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;ref=&quot;</span> &lt;&lt; ref &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;ref=&quot;</span> &lt;&lt; ref &lt;&lt; endl;</span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果如下：</p>
+<p><img src="https://s2.loli.net/2022/06/08/JRs3ZQ6kFirX1Ix.png" alt="image-20220608165534283"></p>
+<p>因为局部变量在函数执行完以后便会销毁，所以引用返回的值并不是真正的局部变量的值，但是编译器会做一次保留，所以第一次输出是准确的，第二次乱码了。<strong>所以不能返回局部变量的引用</strong>。</p>
+<ul>
+<li>函数的调用可以作为左值</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span>&amp; <span class="title">test02</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">static</span> <span class="type">int</span> a = <span class="number">10</span>;<span class="comment">//静态变量，存储在全局区</span></span><br><span class="line">	<span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> &amp;ref = <span class="built_in">test02</span>();</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;ref=&quot;</span> &lt;&lt; ref &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;ref=&quot;</span> &lt;&lt; ref &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">test02</span>() = <span class="number">100</span>;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;ref=&quot;</span> &lt;&lt; ref &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;ref=&quot;</span> &lt;&lt; ref &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2022/06/08/j8f5HXawImsvoWB.png" alt="image-20220608173648369"></p>
+<p>如果函数的返回值是引用，则函数的调用可以作为左值。由于ref是a的别名，所以在test02() = 100时，相当于a=100，则ref=100。</p>
+<h2 id="引用的本质"><a href="#引用的本质" class="headerlink" title="引用的本质"></a>引用的本质</h2><p>==<strong>引用的本质在c++内部实现是一个指针常量</strong>==</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line">    <span class="type">int</span> &amp; ref = a;</span><br><span class="line">    <span class="comment">//自动转换为 int* const ref = &amp;a</span></span><br><span class="line">    ref = <span class="number">20</span>;<span class="comment">//内部发现ref是引用，自动帮我们转换为: *ref = 20</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于指针常量是指针指向不可改，这也说明了为什么一个别名不能同时指向两个变量。当你调用一个引用的时候，编译器都会自动进行一个解引用。如cout&lt;&lt;ref;则编译器会自动转换为cout&lt;&lt;*ref;</p>
+<h2 id="常量引用"><a href="#常量引用" class="headerlink" title="常量引用"></a>常量引用</h2><p>作用：主要用来修饰形参，防止误操作，在函数形参列表里，可以加<strong>const</strong>修饰形参，防止形参改变实参。</p>
+<p>如：const int &amp;ref = 10;//编译器将代码修改  int temp =10;const int &amp;ref =temp;</p>
+<p>如果是int &amp;ref = 10,则会报错，因为引用必须印一块合法的内存空间，而10不是一块合法的内存空间。</p>
+<p>其实本质就是变换成了常量指针常量。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">showValue</span><span class="params">(<span class="type">const</span> <span class="type">int</span> &amp;a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	a = <span class="number">100</span>;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;a=&quot;</span> &lt;&lt; a &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> b = <span class="number">5</span>;</span><br><span class="line">	<span class="built_in">showValue</span>(b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译器会报错，不允许修改a，因为a是一个常量指针常量。这样子可以防止函数修改形参，导致实参改变。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
