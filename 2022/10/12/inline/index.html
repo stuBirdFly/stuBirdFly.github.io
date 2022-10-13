@@ -218,14 +218,6 @@
     </span>
 
   
-    <span id="/2022/10/12/inline/" class="post-meta-item leancloud_visitors" data-flag-title="inline" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
 </div>
 
         </div>
@@ -273,7 +265,7 @@
 
 
 
-    <div class="comments" id="valine-comments"></div>
+    <div class="comments" id="lv-container" data-id="city" data-uid="MTAyMC81NzQyMS8zMzg4NQ=="></div>
 </div>
   </main>
 
@@ -310,21 +302,7 @@
 
 
 
-
-
-<script class="next-config" data-name="valine" type="application/json">{"enable":true,"appId":"UIDApFl5771bR1H1IkQNaFFh-9Nh9j0Va","appKey":"vJBFpcMftefwL64Yaxveo1ue","serverURLs":"https://uidapfl5.api.lncldglobal.com","placeholder":"欢迎交流讨论...","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":null,"visitor":true,"comment_count":true,"recordIP":false,"enableQQ":false,"requiredFields":[],"el":"#valine-comments","path":"/2022/10/12/inline/"}</script>
-<script>
-document.addEventListener('page:loaded', () => {
-  NexT.utils.loadComments(CONFIG.valine.el)
-    .then(() => NexT.utils.getScript(
-      'https://fastly.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js',
-      { condition: window.Valine }
-    ))
-    .then(() => {
-      new Valine(CONFIG.valine);
-    });
-});
-</script>
+<script src="/js/third-party/comments/livere.js"></script>
 
 </body>
 </html>
