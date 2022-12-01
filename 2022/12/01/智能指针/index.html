@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"stubird.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="智能指针为什么需要智能指针 内存泄漏看下面一段代码 12345678int  main()&amp;#123;    &amp;#123;        int *p &#x3D; new int(100);        *p &#x3D; 20;    &amp;#125;    *p &#x3D; 30;&#x2F;&#x2F;error&amp;#125;  ​        当p结束了它的生命周期的时候，p已经无法再被使用了，而操作系统已经为p指向的int内容分配了内">
+<meta property="og:type" content="article">
+<meta property="og:title" content="智能指针">
+<meta property="og:url" content="http://stubird.top/2022/12/01/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/index.html">
+<meta property="og:site_name" content="C++成长之路">
+<meta property="og:description" content="智能指针为什么需要智能指针 内存泄漏看下面一段代码 12345678int  main()&amp;#123;    &amp;#123;        int *p &#x3D; new int(100);        *p &#x3D; 20;    &amp;#125;    *p &#x3D; 30;&#x2F;&#x2F;error&amp;#125;  ​        当p结束了它的生命周期的时候，p已经无法再被使用了，而操作系统已经为p指向的int内容分配了内">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-01T08:26:48.000Z">
+<meta property="article:modified_time" content="2022-12-01T10:01:04.717Z">
+<meta property="article:author" content="Bya">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://stubird.top/2022/12/01/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://stubird.top/2022/12/01/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/","path":"2022/12/01/智能指针/","title":"智能指针"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>智能指针 | C++成长之路</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">C++成长之路</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88"><span class="nav-number">1.</span> <span class="nav-text">智能指针</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F"><span class="nav-number">1.0.1.</span> <span class="nav-text">内存泄漏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-1"><span class="nav-number">1.0.2.</span> <span class="nav-text">智能指针</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#shared-ptr"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">shared_ptr</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#shared-ptr%E7%9A%84%E6%8B%B7%E8%B4%9D%E5%92%8C%E8%B5%8B%E5%80%BC"><span class="nav-number">1.0.2.1.1.</span> <span class="nav-text">shared_ptr的拷贝和赋值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#shared-ptr%E6%98%AF%E6%80%8E%E4%B9%88%E9%87%8A%E6%94%BE%E5%86%85%E5%AD%98%E7%9A%84"><span class="nav-number">1.0.2.1.2.</span> <span class="nav-text">shared_ptr是怎么释放内存的</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#shared-ptr%E5%92%8Cnew%E7%9A%84%E7%BB%93%E5%90%88%E4%BD%BF%E7%94%A8"><span class="nav-number">1.0.2.1.3.</span> <span class="nav-text">shared_ptr和new的结合使用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#shared-ptr%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-number">1.0.2.1.4.</span> <span class="nav-text">shared_ptr的操作</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#unique-ptr"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">unique_ptr</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#unique-ptr%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-number">1.0.2.2.1.</span> <span class="nav-text">unique_ptr的操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%99unique-ptr%E4%BC%A0%E9%80%92%E5%88%A0%E9%99%A4%E5%99%A8"><span class="nav-number">1.0.2.2.2.</span> <span class="nav-text">给unique_ptr传递删除器</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#weak-ptr"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">weak_ptr</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#weak-ptr%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.0.2.3.1.</span> <span class="nav-text">weak_ptr的初始化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#weak-ptr%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">1.0.2.3.2.</span> <span class="nav-text">weak_ptr的作用</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Bya"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Bya</p>
+  <div class="site-description" itemprop="description">记录我的C++学习历程</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://stubird.top/2022/12/01/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bya">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="C++成长之路">
+      <meta itemprop="description" content="记录我的C++学习历程">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="智能指针 | C++成长之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          智能指针
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-12-01 16:26:48 / 修改时间：18:01:04" itemprop="dateCreated datePublished" datetime="2022-12-01T16:26:48+08:00">2022-12-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/12/01/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" class="post-meta-item leancloud_visitors" data-flag-title="智能指针" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h1><p><strong>为什么需要智能指针</strong></p>
+<h3 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h3><p>看下面一段代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span>  <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> *p = <span class="keyword">new</span> <span class="built_in">int</span>(<span class="number">100</span>);</span><br><span class="line">        *p = <span class="number">20</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    *p = <span class="number">30</span>;<span class="comment">//error</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​        当p结束了它的生命周期的时候，p已经无法再被使用了，而操作系统已经为p指向的int内容分配了内存。这会导致这块内存没有被销毁，而又无法再被访问了，这叫做内存泄漏。</p>
+<p>​        当越来越多的内存泄露以后，会导致内存耗尽。因此对于使用new申请的内存，在生命周期结束的时候我们要手动delete，因此传统的指针都是new和delete配套使用的。</p>
+<h3 id="智能指针-1"><a href="#智能指针-1" class="headerlink" title="智能指针"></a>智能指针</h3><p>​        手动的管理内存对于程序员来说是一件比较麻烦的事，而且有时候我们经常会忘记手动释放内存，因此C++11推出了<strong>智能指针</strong>这个概念。</p>
+<p>​        使用智能指针的时候，我们不需要关心什么时候释放内存，因为操作系统会在指针销毁的时候自动去释放指向的那部分内存。而智能指针又分为三类，分别是<strong>shared_ptr</strong>和<strong>unique_ptr</strong>及<strong>weak_ptr</strong>.</p>
+<h4 id="shared-ptr"><a href="#shared-ptr" class="headerlink" title="shared_ptr"></a>shared_ptr</h4><p>​        智能指针都定义在<memory>的头文件中，因此在使用的时候要引入memory头文件。</p>
+<p>​        shared_ptr是共享指针，它允许多个指针指向同一个对象，并且允许拷贝和复制操作。</p>
+<p>​        下面是共享指针p1的定义和初始化:</p>
+<p>​        </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::shared_ptr&lt;string&gt; p1; <span class="comment">//&lt;&gt;是指针指向的类型</span></span><br><span class="line">p1 = <span class="built_in">make_shared</span>&lt;string&gt;(<span class="number">10</span>,<span class="string">&#x27;s&#x27;</span>); <span class="comment">//p1指向个&quot;ssssssssss&quot;的string</span></span><br></pre></td></tr></table></figure>
+
+<p>​        在初始化的时候，（）里面的内容必须要是string的某个构造函数。</p>
+<h5 id="shared-ptr的拷贝和赋值"><a href="#shared-ptr的拷贝和赋值" class="headerlink" title="shared_ptr的拷贝和赋值"></a>shared_ptr的拷贝和赋值</h5><p>​        当进行拷贝和赋值操作的时候，每个shared_ptr都会记录有多少个其他的shared_ptr指向相同的对象：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">auto p = make_shared&lt;int&gt;(43); //p指向的对象只有p一个，因此计数器的值为1</span><br><span class="line">auto q(p);   //用p给q进行拷贝构造，q也指向p所指向的对象，因此计数器的值为2</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="shared-ptr是怎么释放内存的"><a href="#shared-ptr是怎么释放内存的" class="headerlink" title="shared_ptr是怎么释放内存的"></a>shared_ptr是怎么释放内存的</h5><p>​        在shared_ptr的内部有个计数器，记录了当前有多少个shared_ptr指向当前对象，每当一个shared_ptr指向了这个对象，计数器的值便会加一。而每当一个指针被销毁的时候，或者不再指向这个对象的时候，计数器的值便会减一。当计数器的值为0的时候，shared_ptr类会自动销毁此对象并释放内存。它是通过一个特殊的成员函数——析构函数来完成销毁工作的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">auto p = make_shared&lt;int&gt;(43); //p指向的对象只有p一个，因此计数器的值为1</span><br><span class="line">auto q = make_shared&lt;int&gt;(42);   //q指向的对象只有q一个，因此计数器的值为1</span><br><span class="line">p = q;				//用q给p赋值，此时递增q指向对象的引用计数</span><br><span class="line">					//递减p指向对象的引用计数，若p原来指向对象的引用计数为0，则释放之前那块内存</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="shared-ptr和new的结合使用"><a href="#shared-ptr和new的结合使用" class="headerlink" title="shared_ptr和new的结合使用"></a>shared_ptr和new的结合使用</h5><p>​        我们可以用new返回的指针来初始化智能指针</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::shared_ptr&lt;int&gt; p = new int(20);	//错误，不能将一个内置的指针隐式的转换为一个智能指针</span><br><span class="line">std::shared_ptr&lt;int&gt; p(new int(20));	//正确，使用了直接初始化形式</span><br></pre></td></tr></table></figure>
+
+<p>​        但非常不建议混合使用内置指针和智能指针</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">void test(std::shared_ptr&lt;int&gt; p)</span><br><span class="line">&#123;</span><br><span class="line">	return;</span><br><span class="line">&#125;//p指向对象的引用计数会减1</span><br><span class="line">int *q = new int(20);</span><br><span class="line">test(q);	//p指向对象的引用计数为1</span><br><span class="line">*q = 18;	//错误，因为test调用后，p离开作用域，p指向对象的引用计数减为0，系统会释放这块内存，此时q指向的对象不存在，此时q是一个空悬指针 </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::shared_ptr&lt;int&gt; q = new int(20);</span><br><span class="line">test(q);	//p指向对象的引用计数为2</span><br><span class="line">*q = 18;	//正确，此时引用计数为1，不会释放内存</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="shared-ptr的操作"><a href="#shared-ptr的操作" class="headerlink" title="shared_ptr的操作"></a>shared_ptr的操作</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;T&gt; p;		//空智能指针，可以指向类型为T的对象</span><br><span class="line">p;						//将p用作判断条件，p如果有指向的对象，则返回true,否则false</span><br><span class="line">*p;						//解引用p。获取它指向的对象</span><br><span class="line">p-&gt;men;					//等价于(*p)-&gt;men</span><br><span class="line">p.get();				//返回一个指向p指向对象的内置指针</span><br><span class="line">swap(p,q);				//交换p,q中的指针</span><br><span class="line">p.swap(q);</span><br><span class="line"></span><br><span class="line">p = q;					//p指向q指向的对象</span><br><span class="line">p.unique();				//如果p指向对象的引用计数为1，则返回true,否则返回false</span><br><span class="line">p.use_count();			//返回p指向对象的引用计数</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="unique-ptr"><a href="#unique-ptr" class="headerlink" title="unique_ptr"></a>unique_ptr</h4><h5 id="unique-ptr的操作"><a href="#unique-ptr的操作" class="headerlink" title="unique_ptr的操作"></a>unique_ptr的操作</h5><p>​        与shared_ptr不同的是，某个时刻只能有一个unique_ptr指向一个给定的对象，当unique_ptr被销毁的时候，它指向的对象也会被释放。并且由于一个unique_ptr拥有它指向的对象，因此unique_ptr不支持普通的拷贝或赋值操作（不能有两个unique_ptr指向同一个对象）。</p>
+<p>​        不过虽然不能拷贝和赋值，但是我们可以使用reset和release将指针的所有权从一个(非const)unique_ptr转移给另外一个unique_ptr。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">std::unique_ptr&lt;string&gt; p1(new string(&quot;ssssss&quot;));</span><br><span class="line">std::unique_ptr&lt;string&gt; p2(p1.release);				//将所有权从p1转移到了p2</span><br><span class="line">std::unique_ptr&lt;string&gt; p3(new string(&quot;qqqqqq&quot;));</span><br><span class="line">p2.reset(p3.release());								//release将p3置为空，并且返回unique_ptr当前保存的指针。reset接收一个可选的指针参数，令													p2指向了p3之前的对象。并且释放了p2原来指向的内存</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="给unique-ptr传递删除器"><a href="#给unique-ptr传递删除器" class="headerlink" title="给unique_ptr传递删除器"></a>给unique_ptr传递删除器</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">void f(destination &amp;d)</span><br><span class="line">&#123;</span><br><span class="line">	connection  c = connect(&amp;d);		//打开连接</span><br><span class="line">	//当p被销毁的时候，连接会关闭</span><br><span class="line">	unique_ptr&lt;connection,decltype(end_connection)*&gt; p(&amp;c,end_connection);</span><br><span class="line">	//使用连接</span><br><span class="line">	//（如果不使用删除器，且出现了异常而推出，则不会执行后面的关闭连接代码）</span><br><span class="line">	//当f退出时（即使是由于异常而退出），connection会被正确关闭</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="weak-ptr"><a href="#weak-ptr" class="headerlink" title="weak_ptr"></a>weak_ptr</h4><p>​        weak_ptr是一种不控制对象生存期的智能指针，它指向由一个shared_ptr管理的对象，当它绑定在一个shared_ptr的时候不会改变它的引用计数，因此不影响shared_ptr的释放。</p>
+<h5 id="weak-ptr的初始化"><a href="#weak-ptr的初始化" class="headerlink" title="weak_ptr的初始化"></a>weak_ptr的初始化</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::shared_ptr&lt;string&gt; p = make_shared&lt;string&gt;(10,&#x27;s&#x27;);</span><br><span class="line">std::weak_ptr&lt;string&gt; q(p);					//弱指针q绑定到p指针，p的引用计数不会改变</span><br></pre></td></tr></table></figure>
+
+<p>​        由于p的销毁，指向的对象可能已经不存在了，所以弱指针q不能直接访问指向的对象，而必须调用lock。此函数会检查weak_ptr指向的对象是否还存在，如果存在，则返回一个指向共享对象的shared_ptr。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if(std::shared_ptr&lt;string&gt; np = q.lock())</span><br><span class="line">&#123;</span><br><span class="line">	//如果q不存在，则np不指向对象，为false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="weak-ptr的作用"><a href="#weak-ptr的作用" class="headerlink" title="weak_ptr的作用"></a>weak_ptr的作用</h5><p>​        weak_ptr不控制对象的生命期，但是它知道对象是否还活着。如果对象还活着，那么它可以提升为有效的shared_ptr（提升操作通过lock()函数获取所管理对象的强引用指针），然后进行后面的操作；如果对象已经死了，提升会失败，返回一个空的shared_ptr。示例代码如下：</p>
+<p>​        同时weak_ptr还可以解决循环引用的问题。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;memory&gt;</span><br><span class="line"> </span><br><span class="line">using namespace std;</span><br><span class="line"> </span><br><span class="line">class Parent;</span><br><span class="line">class Child; </span><br><span class="line"> </span><br><span class="line">typedef shared_ptr&lt;Parent&gt; parent_ptr;</span><br><span class="line">typedef shared_ptr&lt;Child&gt; child_ptr; </span><br><span class="line"> </span><br><span class="line">class Parent</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">       ~Parent() &#123; </span><br><span class="line">              cout &lt;&lt; &quot;~Parent()&quot; &lt;&lt; endl; </span><br><span class="line">       &#125;</span><br><span class="line">public:</span><br><span class="line">       child_ptr children;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">class Child</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">       ~Child() &#123; </span><br><span class="line">              cout &lt;&lt; &quot;~Child()&quot; &lt;&lt; endl; </span><br><span class="line">       &#125;</span><br><span class="line">public:</span><br><span class="line">       parent_ptr parent;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">  parent_ptr father(new Parent);</span><br><span class="line">  child_ptr son(new Child);</span><br><span class="line"> </span><br><span class="line">  // 父子互相引用</span><br><span class="line">  father-&gt;children = son;</span><br><span class="line">  son-&gt;parent = father;</span><br><span class="line"> </span><br><span class="line">  cout &lt;&lt; father.use_count() &lt;&lt; endl;  // 引用计数为2</span><br><span class="line">  cout &lt;&lt; son.use_count() &lt;&lt; endl;     // 引用计数为2</span><br><span class="line"> </span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​        如上代码，将在程序退出前，father的引用计数为2，son的计数也为2，退出时，shared_ptr所作操作就是简单的将计数减1，如果为0则释放，显然，这个情况下，引用计数不为0，于是造成father和son所指向的内存得不到释放，导致内存泄露。</p>
+<p>​        使用weak_ptr可以打破这样的循环引用。由于弱引用不更改引用计数，类似普通指针，只要把循环引用的一方使用弱引用，即可解除循环引用。</p>
+<p>​        以上述代码为例，只要把Child类的代码修改为如下即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Child</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">       ~Child() &#123; </span><br><span class="line">              cout &lt;&lt; &quot;~Child()&quot; &lt;&lt; endl; </span><br><span class="line">       &#125;</span><br><span class="line">public:</span><br><span class="line">       weak_ptr&lt;Parent&gt; parent; </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>​        最后值得一提的是，虽然通过弱引用指针可以有效的解除循环引用，但这种方式必须在能预见会出现循环引用的情况下才能使用，即这个仅仅是一种编译期的解决方案，如果程序在运行过程中出现了循环引用，还是会造成内存泄漏的。因此，不要认为只要使用了智能指针便能杜绝内存泄漏。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/10/20/unsigned-int/" rel="prev" title="unsigned int">
+                  <i class="fa fa-chevron-left"></i> unsigned int
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="lv-container" data-id="city" data-uid="MTAyMC81NzQyMS8zMzg4NQ=="></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bya</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"UIDApFl5771bR1H1IkQNaFFh-9Nh9j0Va","app_key":"vJBFpcMftefwL64Yaxveo1ue","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<script src="/js/third-party/comments/livere.js"></script>
+
+</body>
+</html>

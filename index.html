@@ -127,7 +127,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -162,6 +162,158 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://stubird.top/2022/12/01/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bya">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="C++成长之路">
+      <meta itemprop="description" content="记录我的C++学习历程">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | C++成长之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/12/01/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">智能指针</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-12-01 16:26:48 / 修改时间：18:01:04" itemprop="dateCreated datePublished" datetime="2022-12-01T16:26:48+08:00">2022-12-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/12/01/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" class="post-meta-item leancloud_visitors" data-flag-title="智能指针" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h1><p><strong>为什么需要智能指针</strong></p>
+<h3 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h3><p>看下面一段代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span>  <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> *p = <span class="keyword">new</span> <span class="built_in">int</span>(<span class="number">100</span>);</span><br><span class="line">        *p = <span class="number">20</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    *p = <span class="number">30</span>;<span class="comment">//error</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​        当p结束了它的生命周期的时候，p已经无法再被使用了，而操作系统已经为p指向的int内容分配了内存。这会导致这块内存没有被销毁，而又无法再被访问了，这叫做内存泄漏。</p>
+<p>​        当越来越多的内存泄露以后，会导致内存耗尽。因此对于使用new申请的内存，在生命周期结束的时候我们要手动delete，因此传统的指针都是new和delete配套使用的。</p>
+<h3 id="智能指针-1"><a href="#智能指针-1" class="headerlink" title="智能指针"></a>智能指针</h3><p>​        手动的管理内存对于程序员来说是一件比较麻烦的事，而且有时候我们经常会忘记手动释放内存，因此C++11推出了<strong>智能指针</strong>这个概念。</p>
+<p>​        使用智能指针的时候，我们不需要关心什么时候释放内存，因为操作系统会在指针销毁的时候自动去释放指向的那部分内存。而智能指针又分为三类，分别是<strong>shared_ptr</strong>和<strong>unique_ptr</strong>及<strong>weak_ptr</strong>.</p>
+<h4 id="shared-ptr"><a href="#shared-ptr" class="headerlink" title="shared_ptr"></a>shared_ptr</h4><p>​        智能指针都定义在<memory>的头文件中，因此在使用的时候要引入memory头文件。</p>
+<p>​        shared_ptr是共享指针，它允许多个指针指向同一个对象，并且允许拷贝和复制操作。</p>
+<p>​        下面是共享指针p1的定义和初始化:</p>
+<p>​        </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::shared_ptr&lt;string&gt; p1; <span class="comment">//&lt;&gt;是指针指向的类型</span></span><br><span class="line">p1 = <span class="built_in">make_shared</span>&lt;string&gt;(<span class="number">10</span>,<span class="string">&#x27;s&#x27;</span>); <span class="comment">//p1指向个&quot;ssssssssss&quot;的string</span></span><br></pre></td></tr></table></figure>
+
+<p>​        在初始化的时候，（）里面的内容必须要是string的某个构造函数。</p>
+<h5 id="shared-ptr的拷贝和赋值"><a href="#shared-ptr的拷贝和赋值" class="headerlink" title="shared_ptr的拷贝和赋值"></a>shared_ptr的拷贝和赋值</h5><p>​        当进行拷贝和赋值操作的时候，每个shared_ptr都会记录有多少个其他的shared_ptr指向相同的对象：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">auto p = make_shared&lt;int&gt;(43); //p指向的对象只有p一个，因此计数器的值为1</span><br><span class="line">auto q(p);   //用p给q进行拷贝构造，q也指向p所指向的对象，因此计数器的值为2</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="shared-ptr是怎么释放内存的"><a href="#shared-ptr是怎么释放内存的" class="headerlink" title="shared_ptr是怎么释放内存的"></a>shared_ptr是怎么释放内存的</h5><p>​        在shared_ptr的内部有个计数器，记录了当前有多少个shared_ptr指向当前对象，每当一个shared_ptr指向了这个对象，计数器的值便会加一。而每当一个指针被销毁的时候，或者不再指向这个对象的时候，计数器的值便会减一。当计数器的值为0的时候，shared_ptr类会自动销毁此对象并释放内存。它是通过一个特殊的成员函数——析构函数来完成销毁工作的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">auto p = make_shared&lt;int&gt;(43); //p指向的对象只有p一个，因此计数器的值为1</span><br><span class="line">auto q = make_shared&lt;int&gt;(42);   //q指向的对象只有q一个，因此计数器的值为1</span><br><span class="line">p = q;				//用q给p赋值，此时递增q指向对象的引用计数</span><br><span class="line">					//递减p指向对象的引用计数，若p原来指向对象的引用计数为0，则释放之前那块内存</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="shared-ptr和new的结合使用"><a href="#shared-ptr和new的结合使用" class="headerlink" title="shared_ptr和new的结合使用"></a>shared_ptr和new的结合使用</h5><p>​        我们可以用new返回的指针来初始化智能指针</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::shared_ptr&lt;int&gt; p = new int(20);	//错误，不能将一个内置的指针隐式的转换为一个智能指针</span><br><span class="line">std::shared_ptr&lt;int&gt; p(new int(20));	//正确，使用了直接初始化形式</span><br></pre></td></tr></table></figure>
+
+<p>​        但非常不建议混合使用内置指针和智能指针</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">void test(std::shared_ptr&lt;int&gt; p)</span><br><span class="line">&#123;</span><br><span class="line">	return;</span><br><span class="line">&#125;//p指向对象的引用计数会减1</span><br><span class="line">int *q = new int(20);</span><br><span class="line">test(q);	//p指向对象的引用计数为1</span><br><span class="line">*q = 18;	//错误，因为test调用后，p离开作用域，p指向对象的引用计数减为0，系统会释放这块内存，此时q指向的对象不存在，此时q是一个空悬指针 </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::shared_ptr&lt;int&gt; q = new int(20);</span><br><span class="line">test(q);	//p指向对象的引用计数为2</span><br><span class="line">*q = 18;	//正确，此时引用计数为1，不会释放内存</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="shared-ptr的操作"><a href="#shared-ptr的操作" class="headerlink" title="shared_ptr的操作"></a>shared_ptr的操作</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;T&gt; p;		//空智能指针，可以指向类型为T的对象</span><br><span class="line">p;						//将p用作判断条件，p如果有指向的对象，则返回true,否则false</span><br><span class="line">*p;						//解引用p。获取它指向的对象</span><br><span class="line">p-&gt;men;					//等价于(*p)-&gt;men</span><br><span class="line">p.get();				//返回一个指向p指向对象的内置指针</span><br><span class="line">swap(p,q);				//交换p,q中的指针</span><br><span class="line">p.swap(q);</span><br><span class="line"></span><br><span class="line">p = q;					//p指向q指向的对象</span><br><span class="line">p.unique();				//如果p指向对象的引用计数为1，则返回true,否则返回false</span><br><span class="line">p.use_count();			//返回p指向对象的引用计数</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="unique-ptr"><a href="#unique-ptr" class="headerlink" title="unique_ptr"></a>unique_ptr</h4><h5 id="unique-ptr的操作"><a href="#unique-ptr的操作" class="headerlink" title="unique_ptr的操作"></a>unique_ptr的操作</h5><p>​        与shared_ptr不同的是，某个时刻只能有一个unique_ptr指向一个给定的对象，当unique_ptr被销毁的时候，它指向的对象也会被释放。并且由于一个unique_ptr拥有它指向的对象，因此unique_ptr不支持普通的拷贝或赋值操作（不能有两个unique_ptr指向同一个对象）。</p>
+<p>​        不过虽然不能拷贝和赋值，但是我们可以使用reset和release将指针的所有权从一个(非const)unique_ptr转移给另外一个unique_ptr。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">std::unique_ptr&lt;string&gt; p1(new string(&quot;ssssss&quot;));</span><br><span class="line">std::unique_ptr&lt;string&gt; p2(p1.release);				//将所有权从p1转移到了p2</span><br><span class="line">std::unique_ptr&lt;string&gt; p3(new string(&quot;qqqqqq&quot;));</span><br><span class="line">p2.reset(p3.release());								//release将p3置为空，并且返回unique_ptr当前保存的指针。reset接收一个可选的指针参数，令													p2指向了p3之前的对象。并且释放了p2原来指向的内存</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="给unique-ptr传递删除器"><a href="#给unique-ptr传递删除器" class="headerlink" title="给unique_ptr传递删除器"></a>给unique_ptr传递删除器</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">void f(destination &amp;d)</span><br><span class="line">&#123;</span><br><span class="line">	connection  c = connect(&amp;d);		//打开连接</span><br><span class="line">	//当p被销毁的时候，连接会关闭</span><br><span class="line">	unique_ptr&lt;connection,decltype(end_connection)*&gt; p(&amp;c,end_connection);</span><br><span class="line">	//使用连接</span><br><span class="line">	//（如果不使用删除器，且出现了异常而推出，则不会执行后面的关闭连接代码）</span><br><span class="line">	//当f退出时（即使是由于异常而退出），connection会被正确关闭</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="weak-ptr"><a href="#weak-ptr" class="headerlink" title="weak_ptr"></a>weak_ptr</h4><p>​        weak_ptr是一种不控制对象生存期的智能指针，它指向由一个shared_ptr管理的对象，当它绑定在一个shared_ptr的时候不会改变它的引用计数，因此不影响shared_ptr的释放。</p>
+<h5 id="weak-ptr的初始化"><a href="#weak-ptr的初始化" class="headerlink" title="weak_ptr的初始化"></a>weak_ptr的初始化</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::shared_ptr&lt;string&gt; p = make_shared&lt;string&gt;(10,&#x27;s&#x27;);</span><br><span class="line">std::weak_ptr&lt;string&gt; q(p);					//弱指针q绑定到p指针，p的引用计数不会改变</span><br></pre></td></tr></table></figure>
+
+<p>​        由于p的销毁，指向的对象可能已经不存在了，所以弱指针q不能直接访问指向的对象，而必须调用lock。此函数会检查weak_ptr指向的对象是否还存在，如果存在，则返回一个指向共享对象的shared_ptr。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if(std::shared_ptr&lt;string&gt; np = q.lock())</span><br><span class="line">&#123;</span><br><span class="line">	//如果q不存在，则np不指向对象，为false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="weak-ptr的作用"><a href="#weak-ptr的作用" class="headerlink" title="weak_ptr的作用"></a>weak_ptr的作用</h5><p>​        weak_ptr不控制对象的生命期，但是它知道对象是否还活着。如果对象还活着，那么它可以提升为有效的shared_ptr（提升操作通过lock()函数获取所管理对象的强引用指针），然后进行后面的操作；如果对象已经死了，提升会失败，返回一个空的shared_ptr。示例代码如下：</p>
+<p>​        同时weak_ptr还可以解决循环引用的问题。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;memory&gt;</span><br><span class="line"> </span><br><span class="line">using namespace std;</span><br><span class="line"> </span><br><span class="line">class Parent;</span><br><span class="line">class Child; </span><br><span class="line"> </span><br><span class="line">typedef shared_ptr&lt;Parent&gt; parent_ptr;</span><br><span class="line">typedef shared_ptr&lt;Child&gt; child_ptr; </span><br><span class="line"> </span><br><span class="line">class Parent</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">       ~Parent() &#123; </span><br><span class="line">              cout &lt;&lt; &quot;~Parent()&quot; &lt;&lt; endl; </span><br><span class="line">       &#125;</span><br><span class="line">public:</span><br><span class="line">       child_ptr children;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">class Child</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">       ~Child() &#123; </span><br><span class="line">              cout &lt;&lt; &quot;~Child()&quot; &lt;&lt; endl; </span><br><span class="line">       &#125;</span><br><span class="line">public:</span><br><span class="line">       parent_ptr parent;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">  parent_ptr father(new Parent);</span><br><span class="line">  child_ptr son(new Child);</span><br><span class="line"> </span><br><span class="line">  // 父子互相引用</span><br><span class="line">  father-&gt;children = son;</span><br><span class="line">  son-&gt;parent = father;</span><br><span class="line"> </span><br><span class="line">  cout &lt;&lt; father.use_count() &lt;&lt; endl;  // 引用计数为2</span><br><span class="line">  cout &lt;&lt; son.use_count() &lt;&lt; endl;     // 引用计数为2</span><br><span class="line"> </span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​        如上代码，将在程序退出前，father的引用计数为2，son的计数也为2，退出时，shared_ptr所作操作就是简单的将计数减1，如果为0则释放，显然，这个情况下，引用计数不为0，于是造成father和son所指向的内存得不到释放，导致内存泄露。</p>
+<p>​        使用weak_ptr可以打破这样的循环引用。由于弱引用不更改引用计数，类似普通指针，只要把循环引用的一方使用弱引用，即可解除循环引用。</p>
+<p>​        以上述代码为例，只要把Child类的代码修改为如下即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Child</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">       ~Child() &#123; </span><br><span class="line">              cout &lt;&lt; &quot;~Child()&quot; &lt;&lt; endl; </span><br><span class="line">       &#125;</span><br><span class="line">public:</span><br><span class="line">       weak_ptr&lt;Parent&gt; parent; </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>​        最后值得一提的是，虽然通过弱引用指针可以有效的解除循环引用，但这种方式必须在能预见会出现循环引用的情况下才能使用，即这个仅仅是一种编译期的解决方案，如果程序在运行过程中出现了循环引用，还是会造成内存泄漏的。因此，不要认为只要使用了智能指针便能杜绝内存泄漏。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1085,140 +1237,9 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://stubird.top/2022/05/26/%E5%AD%A6%E4%B9%A0typora/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Bya">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="C++成长之路">
-      <meta itemprop="description" content="记录我的C++学习历程">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | C++成长之路">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/05/26/%E5%AD%A6%E4%B9%A0typora/" class="post-title-link" itemprop="url">学习typora</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-26 16:30:12" itemprop="dateCreated datePublished" datetime="2022-05-26T16:30:12+08:00">2022-05-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-05-27 15:43:55" itemprop="dateModified" datetime="2022-05-27T15:43:55+08:00">2022-05-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2022/05/26/%E5%AD%A6%E4%B9%A0typora/" class="post-meta-item leancloud_visitors" data-flag-title="学习typora" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h1><p>加一个#和空格表示一级标题，加两个##表示二级标题，类似的，可以到六级标题。（注意#后与标题间要有个空格），而markdown是不需要的。</p>
-<h1 id="段落"><a href="#段落" class="headerlink" title="段落"></a>段落</h1><p>按换行符enter可以建立新的一行，按shift+enter可以创建一个比段落间距更小的行间距。</p>
-<h1 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h1><h3 id="斜体"><a href="#斜体" class="headerlink" title="斜体"></a>斜体</h3><p>以* 或_ 括住需要改变字体的文段，例如：</p>
-<p><em>这是我要改变的斜体1</em>，                 _这是我要改变的斜体二_。</p>
-<h3 id="加粗"><a href="#加粗" class="headerlink" title="加粗"></a>加粗</h3><p>以** 或_ _括住的字体就是加粗字体，例如：</p>
-<p><strong>加粗字体1</strong>，__加粗字体二__。</p>
-<h3 id="删除线"><a href="#删除线" class="headerlink" title="删除线"></a>删除线</h3><p>开头用~~,结尾也用，例如：</p>
-<p><del>这是错误文字</del></p>
-<h3 id="下划线"><a href="#下划线" class="headerlink" title="下划线"></a>下划线</h3><p>使用HTML标签&lt; u &gt;和&lt; /u &gt;,中间没有空格，例如：</p>
-<p><u>这是下划线</u></p>
-<h3 id="高亮"><a href="#高亮" class="headerlink" title="高亮"></a>高亮</h3><p>用==括住的内容就是高亮内容，需要自己在偏好设置里面打开这项功能，例如：</p>
-<p>==这是高亮内容==</p>
-<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p>行内输入代码块快捷键：Ctrl+shift+K</p>
-<ul>
-<li>1.开头```+语言名，开启代码块，换行键</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;这是一个测试文件&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>2.用`包括起来的也是表示代码</p>
-<p><code>这也可以显示成代码</code></p>
-</li>
-</ul>
-<h1 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h1><p>输入···按换行建换行，即可绘制一条水平线,如</p>
-<p>···</p>
-<h1 id="超链接"><a href="#超链接" class="headerlink" title="超链接"></a>超链接</h1><p>用[ ]括住要超链接的内容，然后后面用( )括住超链接的地址，如：</p>
-<p>[我的github]（<a target="_blank" rel="noopener" href="https://github.com/stuBirdFly/stuBirdFly.github.io%EF%BC%89">https://github.com/stuBirdFly/stuBirdFly.github.io）</a></p>
-<h1 id="URLs"><a href="#URLs" class="headerlink" title="URLs"></a>URLs</h1><p>用&lt;&gt;括住url，可手动设置url，对于标准的urls会自动识别，如：</p>
-<p>&lt;<a target="_blank" rel="noopener" href="http://www.baidu.com&gt;/">www.baidu.com&gt;</a></p>
-<h1 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h1><ul>
-<li><p>1.手动添加：和添加超链接方式区别不大，前面加一个感叹号！。如</p>
-<p><img src="%E5%9B%BE%E7%89%87%E5%9C%B0%E5%9D%80" alt="图片名称"></p>
-</li>
-<li><p>2.直接拖曳进来，自动生成链接。</p>
-</li>
-</ul>
-<h1 id="Typora图床设置"><a href="#Typora图床设置" class="headerlink" title="Typora图床设置"></a>Typora图床设置</h1><p>进入Typora偏好设置,点击图像，<strong>这里注意：Typora的版本必须在0.9.86以上</strong>才可以在Typora中集成图床。设置如下图所示：</p>
-<p><img src="https://s2.loli.net/2022/05/26/ECM8DWwkJxBuf4X.png" alt="设置图片"></p>
-<p>下载更新完以后打开配置文件，按下图格式修改：</p>
-<p><img src="https://s2.loli.net/2022/05/26/IqFP4u9bdBUZfTr.png" alt="配置文件修改"></p>
-<p><strong>注意：”smms”后有个逗号。</strong></p>
-<p>如果没有图床账号，可以去<a target="_blank" rel="noopener" href="http://www.sm.ms去注册一个账号,然后生成一个token!/">www.sm.ms去注册一个账号，然后生成一个Token！</a></p>
-<p>最后再回到设置页面，左下角验证图片上传选项，提示成功上传图片即可。如果失败检查配置文件。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 </div>
   </main>

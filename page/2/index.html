@@ -20,27 +20,25 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"stubird.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="c++的分区在内存中，一段程序分为四个区，分别为代码区，全局区，堆和栈。 代码区主要存放程序代码的区域，里面存放的是编译后的机器指令，也就是汇编代码。 全局区全局区里面分为bss段，data段，和rodata段 bssbss段主要存放未经过初始化的全局变量和静态变量 datadata段主要存放经过初始化的全局变量和静态变量，其中静态变量在程序刚开始运行时就会进入初始化，所以未初始化过的静态变量在程">
-<meta property="og:type" content="article">
-<meta property="og:title" content="cpp的分区">
-<meta property="og:url" content="http://stubird.top/2022/10/11/cpp%E7%9A%84%E5%88%86%E5%8C%BA/index.html">
+    <meta name="description" content="记录我的C++学习历程">
+<meta property="og:type" content="website">
+<meta property="og:title" content="C++成长之路">
+<meta property="og:url" content="http://stubird.top/page/2/index.html">
 <meta property="og:site_name" content="C++成长之路">
-<meta property="og:description" content="c++的分区在内存中，一段程序分为四个区，分别为代码区，全局区，堆和栈。 代码区主要存放程序代码的区域，里面存放的是编译后的机器指令，也就是汇编代码。 全局区全局区里面分为bss段，data段，和rodata段 bssbss段主要存放未经过初始化的全局变量和静态变量 datadata段主要存放经过初始化的全局变量和静态变量，其中静态变量在程序刚开始运行时就会进入初始化，所以未初始化过的静态变量在程">
+<meta property="og:description" content="记录我的C++学习历程">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-10-11T02:06:55.000Z">
-<meta property="article:modified_time" content="2022-10-11T02:24:37.423Z">
 <meta property="article:author" content="Bya">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://stubird.top/2022/10/11/cpp%E7%9A%84%E5%88%86%E5%8C%BA/">
+<link rel="canonical" href="http://stubird.top/page/2/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://stubird.top/2022/10/11/cpp%E7%9A%84%E5%88%86%E5%8C%BA/","path":"2022/10/11/cpp的分区/","title":"cpp的分区"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"page/2/index.html","title":""}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>cpp的分区 | C++成长之路</title>
+<title>C++成长之路</title>
   
 
 
@@ -70,7 +68,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <p class="site-title">C++成长之路</p>
+      <h1 class="site-title">C++成长之路</h1>
       <i class="logo-line"></i>
     </a>
   </div>
@@ -102,7 +100,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <div class="sidebar-inner sidebar-overview-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -115,7 +113,6 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#c-%E7%9A%84%E5%88%86%E5%8C%BA"><span class="nav-number">1.</span> <span class="nav-text">c++的分区</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%8C%BA"><span class="nav-number">1.1.</span> <span class="nav-text">代码区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%8C%BA"><span class="nav-number">1.2.</span> <span class="nav-text">全局区</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bss"><span class="nav-number">1.2.1.</span> <span class="nav-text">bss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#data"><span class="nav-number">1.2.2.</span> <span class="nav-text">data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rodata%E6%AE%B5"><span class="nav-number">1.2.3.</span> <span class="nav-text">rodata段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A0%86"><span class="nav-number">1.3.</span> <span class="nav-text">堆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%88"><span class="nav-number">1.4.</span> <span class="nav-text">栈</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -164,18 +161,17 @@
 </noscript>
 
 
-    <div class="main-inner post posts-expand">
+    <div class="main-inner index posts-expand">
 
-
-  
+    
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://stubird.top/2022/10/11/cpp%E7%9A%84%E5%88%86%E5%8C%BA/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://stubird.top/2022/05/26/%E5%AD%A6%E4%B9%A0typora/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -188,13 +184,13 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="cpp的分区 | C++成长之路">
+      <meta itemprop="name" content="undefined | C++成长之路">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          cpp的分区
-        </h1>
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/05/26/%E5%AD%A6%E4%B9%A0typora/" class="post-title-link" itemprop="url">学习typora</a>
+        </h2>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -203,9 +199,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-10-11 10:06:55 / 修改时间：10:24:37" itemprop="dateCreated datePublished" datetime="2022-10-11T10:06:55+08:00">2022-10-11</time>
+      <time title="创建时间：2022-05-26 16:30:12" itemprop="dateCreated datePublished" datetime="2022-05-26T16:30:12+08:00">2022-05-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-05-27 15:43:55" itemprop="dateModified" datetime="2022-05-27T15:43:55+08:00">2022-05-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -213,12 +215,12 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a>
+          <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
         </span>
     </span>
 
   
-    <span id="/2022/10/11/cpp%E7%9A%84%E5%88%86%E5%8C%BA/" class="post-meta-item leancloud_visitors" data-flag-title="cpp的分区" title="阅读次数">
+    <span id="/2022/05/26/%E5%AD%A6%E4%B9%A0typora/" class="post-meta-item leancloud_visitors" data-flag-title="学习typora" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -234,15 +236,51 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="c-的分区"><a href="#c-的分区" class="headerlink" title="c++的分区"></a>c++的分区</h1><p>在内存中，一段程序分为四个区，分别为代码区，全局区，堆和栈。</p>
-<h2 id="代码区"><a href="#代码区" class="headerlink" title="代码区"></a>代码区</h2><p>主要存放程序代码的区域，里面存放的是编译后的机器指令，也就是汇编代码。</p>
-<h2 id="全局区"><a href="#全局区" class="headerlink" title="全局区"></a>全局区</h2><p>全局区里面分为bss段，data段，和rodata段</p>
-<h3 id="bss"><a href="#bss" class="headerlink" title="bss"></a>bss</h3><p>bss段主要存放未经过初始化的全局变量和静态变量</p>
-<h3 id="data"><a href="#data" class="headerlink" title="data"></a>data</h3><p>data段主要存放经过初始化的全局变量和静态变量，其中静态变量在程序刚开始运行时就会进入初始化，所以未初始化过的静态变量在程序运行后便会进入bss段中，而且静态变量的初始化只会执行一次。</p>
-<h3 id="rodata段"><a href="#rodata段" class="headerlink" title="rodata段"></a>rodata段</h3><p>rodata段主要存放常量，称为常量区。用于存放各类常量，例如const、字面量、#define </p>
-<h2 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h2><p>new出来的变量进入堆区中。需要自己生成与释放。若不释放，则可能由操作系统回收。堆的申请一般比较慢，因为系统需要查找足够大小的内存空间。堆的内存空间一般是不连续的。</p>
-<h2 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h2><p>类型符前有auto（因为局部变量之前auto一般都会省略，auto的含义是指此变量进入栈后，会被自动回收，不需要程序员自己释放，会保持栈的平衡，所以称为auto类型）的变量进入栈区，也就是局部变量和函数等。存放函数调用的相关的参数。由于栈的空间一般是连续的，所以栈的内存申请比较快，由系统自动分配，内存空间一般也是连续的。</p>
+          <h1 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h1><p>加一个#和空格表示一级标题，加两个##表示二级标题，类似的，可以到六级标题。（注意#后与标题间要有个空格），而markdown是不需要的。</p>
+<h1 id="段落"><a href="#段落" class="headerlink" title="段落"></a>段落</h1><p>按换行符enter可以建立新的一行，按shift+enter可以创建一个比段落间距更小的行间距。</p>
+<h1 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h1><h3 id="斜体"><a href="#斜体" class="headerlink" title="斜体"></a>斜体</h3><p>以* 或_ 括住需要改变字体的文段，例如：</p>
+<p><em>这是我要改变的斜体1</em>，                 _这是我要改变的斜体二_。</p>
+<h3 id="加粗"><a href="#加粗" class="headerlink" title="加粗"></a>加粗</h3><p>以** 或_ _括住的字体就是加粗字体，例如：</p>
+<p><strong>加粗字体1</strong>，__加粗字体二__。</p>
+<h3 id="删除线"><a href="#删除线" class="headerlink" title="删除线"></a>删除线</h3><p>开头用~~,结尾也用，例如：</p>
+<p><del>这是错误文字</del></p>
+<h3 id="下划线"><a href="#下划线" class="headerlink" title="下划线"></a>下划线</h3><p>使用HTML标签&lt; u &gt;和&lt; /u &gt;,中间没有空格，例如：</p>
+<p><u>这是下划线</u></p>
+<h3 id="高亮"><a href="#高亮" class="headerlink" title="高亮"></a>高亮</h3><p>用==括住的内容就是高亮内容，需要自己在偏好设置里面打开这项功能，例如：</p>
+<p>==这是高亮内容==</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p>行内输入代码块快捷键：Ctrl+shift+K</p>
+<ul>
+<li>1.开头```+语言名，开启代码块，换行键</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;这是一个测试文件&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<ul>
+<li><p>2.用`包括起来的也是表示代码</p>
+<p><code>这也可以显示成代码</code></p>
+</li>
+</ul>
+<h1 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h1><p>输入···按换行建换行，即可绘制一条水平线,如</p>
+<p>···</p>
+<h1 id="超链接"><a href="#超链接" class="headerlink" title="超链接"></a>超链接</h1><p>用[ ]括住要超链接的内容，然后后面用( )括住超链接的地址，如：</p>
+<p>[我的github]（<a target="_blank" rel="noopener" href="https://github.com/stuBirdFly/stuBirdFly.github.io%EF%BC%89">https://github.com/stuBirdFly/stuBirdFly.github.io）</a></p>
+<h1 id="URLs"><a href="#URLs" class="headerlink" title="URLs"></a>URLs</h1><p>用&lt;&gt;括住url，可手动设置url，对于标准的urls会自动识别，如：</p>
+<p>&lt;<a target="_blank" rel="noopener" href="http://www.baidu.com&gt;/">www.baidu.com&gt;</a></p>
+<h1 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h1><ul>
+<li><p>1.手动添加：和添加超链接方式区别不大，前面加一个感叹号！。如</p>
+<p><img src="%E5%9B%BE%E7%89%87%E5%9C%B0%E5%9D%80" alt="图片名称"></p>
+</li>
+<li><p>2.直接拖曳进来，自动生成链接。</p>
+</li>
+</ul>
+<h1 id="Typora图床设置"><a href="#Typora图床设置" class="headerlink" title="Typora图床设置"></a>Typora图床设置</h1><p>进入Typora偏好设置,点击图像，<strong>这里注意：Typora的版本必须在0.9.86以上</strong>才可以在Typora中集成图床。设置如下图所示：</p>
+<p><img src="https://s2.loli.net/2022/05/26/ECM8DWwkJxBuf4X.png" alt="设置图片"></p>
+<p>下载更新完以后打开配置文件，按下图格式修改：</p>
+<p><img src="https://s2.loli.net/2022/05/26/IqFP4u9bdBUZfTr.png" alt="配置文件修改"></p>
+<p><strong>注意：”smms”后有个逗号。</strong></p>
+<p>如果没有图床账号，可以去<a target="_blank" rel="noopener" href="http://www.sm.ms去注册一个账号,然后生成一个token!/">www.sm.ms去注册一个账号，然后生成一个Token！</a></p>
+<p>最后再回到设置页面，左下角验证图片上传选项，提示成功上传图片即可。如果失败检查配置文件。</p>
+
+      
     </div>
 
     
@@ -250,21 +288,8 @@
     
 
     <footer class="post-footer">
-
-        
-
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2022/06/08/%E5%BC%95%E7%94%A8%E7%9A%84%E5%85%B6%E4%BB%96%E7%94%A8%E6%B3%95/" rel="prev" title="引用的其他用法">
-                  <i class="fa fa-chevron-left"></i> 引用的其他用法
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2022/10/12/%E5%B7%A6%E5%80%BC%E5%8F%B3%E5%80%BC/" rel="next" title="左值右值和std::move,std::forward">
-                  左值右值和std::move,std::forward <i class="fa fa-chevron-right"></i>
-                </a>
-            </div>
-          </div>
+        <div class="post-eof"></div>
+      
     </footer>
   </article>
 </div>
@@ -272,9 +297,10 @@
 
 
 
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
 
-
-    <div class="comments" id="lv-container" data-id="city" data-uid="MTAyMC81NzQyMS8zMzg4NQ=="></div>
 </div>
   </main>
 
