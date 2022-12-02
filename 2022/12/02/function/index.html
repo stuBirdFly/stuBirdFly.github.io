@@ -20,30 +20,27 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"stubird.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="​    今天看代码的时候，发现有些地方的if判断删除了，但是花括号没有删除，不知道会不会影响到里面代码的执行，如： 123456789101112131415161718192021222324252627class Dog&amp;#123;public:    Dog();    ~Dog();&amp;#125;;Dog::Dog()&amp;#123;    cout&lt;&lt;&quot;生成一条狗&amp;qu">
+    <meta name="description" content="C++ function​        function 是一个模板，当创建一个具体的function类型时我们必须提供额外的信息，这个类型主要是存储可调用对象，如函数对象，函数指针，一般与map搭配使用。需要引用 function的初始化1function&lt;int(int,int)&gt; f;  ​        上面表示 f 可以存储一个返回对象为int，参数列表为两个int的函数对">
 <meta property="og:type" content="article">
-<meta property="og:title" content="c++花括号">
-<meta property="og:url" content="http://stubird.top/2022/06/06/c-%E8%8A%B1%E6%8B%AC%E5%8F%B7/index.html">
+<meta property="og:title" content="function">
+<meta property="og:url" content="http://stubird.top/2022/12/02/function/index.html">
 <meta property="og:site_name" content="C++成长之路">
-<meta property="og:description" content="​    今天看代码的时候，发现有些地方的if判断删除了，但是花括号没有删除，不知道会不会影响到里面代码的执行，如： 123456789101112131415161718192021222324252627class Dog&amp;#123;public:    Dog();    ~Dog();&amp;#125;;Dog::Dog()&amp;#123;    cout&lt;&lt;&quot;生成一条狗&amp;qu">
+<meta property="og:description" content="C++ function​        function 是一个模板，当创建一个具体的function类型时我们必须提供额外的信息，这个类型主要是存储可调用对象，如函数对象，函数指针，一般与map搭配使用。需要引用 function的初始化1function&lt;int(int,int)&gt; f;  ​        上面表示 f 可以存储一个返回对象为int，参数列表为两个int的函数对">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s2.loli.net/2022/06/06/iMdg6eamBAtH43C.png">
-<meta property="og:image" content="https://s2.loli.net/2022/06/06/JEX2ROs3zHWnuwM.png">
-<meta property="article:published_time" content="2022-06-06T10:42:45.000Z">
-<meta property="article:modified_time" content="2022-06-06T10:59:11.658Z">
+<meta property="article:published_time" content="2022-12-02T03:12:21.000Z">
+<meta property="article:modified_time" content="2022-12-02T08:07:50.940Z">
 <meta property="article:author" content="Bya">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s2.loli.net/2022/06/06/iMdg6eamBAtH43C.png">
 
 
-<link rel="canonical" href="http://stubird.top/2022/06/06/c-%E8%8A%B1%E6%8B%AC%E5%8F%B7/">
+<link rel="canonical" href="http://stubird.top/2022/12/02/function/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://stubird.top/2022/06/06/c-%E8%8A%B1%E6%8B%AC%E5%8F%B7/","path":"2022/06/06/c-花括号/","title":"c++花括号"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://stubird.top/2022/12/02/function/","path":"2022/12/02/function/","title":"function"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>c++花括号 | C++成长之路</title>
+<title>function | C++成长之路</title>
   
 
 
@@ -118,7 +115,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">1.</span> <span class="nav-text">结论</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C-function"><span class="nav-number">1.</span> <span class="nav-text">C++ function</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#function%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.1.</span> <span class="nav-text">function的初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#function%E5%92%8Cmap%E7%9A%84%E9%85%8D%E5%A5%97%E4%BD%BF%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">function和map的配套使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E8%BD%BD%E7%9A%84%E5%87%BD%E6%95%B0%E4%B8%8Efunction"><span class="nav-number">1.3.</span> <span class="nav-text">重载的函数与function</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -178,7 +175,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://stubird.top/2022/06/06/c-%E8%8A%B1%E6%8B%AC%E5%8F%B7/">
+    <link itemprop="mainEntityOfPage" href="http://stubird.top/2022/12/02/function/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -191,12 +188,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="c++花括号 | C++成长之路">
+      <meta itemprop="name" content="function | C++成长之路">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          c++花括号
+          function
         </h1>
 
         <div class="post-meta-container">
@@ -208,7 +205,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2022-06-06 18:42:45 / 修改时间：18:59:11" itemprop="dateCreated datePublished" datetime="2022-06-06T18:42:45+08:00">2022-06-06</time>
+      <time title="创建时间：2022-12-02 11:12:21 / 修改时间：16:07:50" itemprop="dateCreated datePublished" datetime="2022-12-02T11:12:21+08:00">2022-12-02</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -221,7 +218,7 @@
     </span>
 
   
-    <span id="/2022/06/06/c-%E8%8A%B1%E6%8B%AC%E5%8F%B7/" class="post-meta-item leancloud_visitors" data-flag-title="c++花括号" title="阅读次数">
+    <span id="/2022/12/02/function/" class="post-meta-item leancloud_visitors" data-flag-title="function" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -237,17 +234,28 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>​    今天看代码的时候，发现有些地方的if判断删除了，但是花括号没有删除，不知道会不会影响到里面代码的执行，如：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Dog</span>();</span><br><span class="line">    ~<span class="built_in">Dog</span>();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Dog::<span class="built_in">Dog</span>()</span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;生成一条狗&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Dog::~<span class="built_in">Dog</span>()</span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;毁灭一条狗&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *args[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;hello world&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="comment">// if(a==b)</span></span><br><span class="line">    &#123;</span><br><span class="line">    	Dog d; </span><br><span class="line">	&#125;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;hello run last&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+        <h1 id="C-function"><a href="#C-function" class="headerlink" title="C++ function"></a>C++ function</h1><p>​        function<T> 是一个模板，当创建一个具体的function类型时我们必须提供额外的信息，这个类型主要是存储可调用对象，如函数对象，函数指针，一般与map搭配使用。需要引用<functional></p>
+<h2 id="function的初始化"><a href="#function的初始化" class="headerlink" title="function的初始化"></a>function的初始化</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function&lt;int(int,int)&gt; f;</span><br></pre></td></tr></table></figure>
 
-<p>运行结果如下：</p>
-<p><img src="https://s2.loli.net/2022/06/06/iMdg6eamBAtH43C.png" alt="image-20220606185543769"></p>
-<p>再去掉花括号：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Dog</span>();</span><br><span class="line">    ~<span class="built_in">Dog</span>();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Dog::<span class="built_in">Dog</span>()</span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;生成一条狗&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Dog::~<span class="built_in">Dog</span>()</span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;毁灭一条狗&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *args[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;hello world&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="comment">// if(a==b)</span></span><br><span class="line">    </span><br><span class="line">    Dog d; </span><br><span class="line">	</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;hello run last&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​        上面表示 f 可以存储一个返回对象为int，参数列表为两个int的函数对象。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//首先创建一个函数对象</span><br><span class="line">class ADD</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">	int operator()(int a,int b)			//对操作符()进行了重载的类，其对象称为函数对象</span><br><span class="line">	&#123; return a+b; &#125;</span><br><span class="line">&#125;;</span><br><span class="line">ADD add;</span><br><span class="line">f = add(); </span><br><span class="line">auto ans = f(2,4);				//ans为6</span><br></pre></td></tr></table></figure>
 
-<p>运行结果如下：</p>
-<p><img src="https://s2.loli.net/2022/06/06/JEX2ROs3zHWnuwM.png" alt="image-20220606185649437"></p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>​    花括号内的代码是一定会执行的，但是在括号内创建的对象，会在执行完括号内的代码后进行析构。</p>
+<p>​        此时f为可调用对象了。下面列举其他可存储的可调用对象：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">int (*add)(int a,int b)&#123; return a+b; &#125;;</span><br><span class="line">function&lt;int(int,int)&gt; f = add;		</span><br><span class="line"></span><br><span class="line">function&lt;int(int,int)&gt; f = [](int a,int b) &#123;return a+b; &#125;;//未命名的lambda表达式</span><br><span class="line"></span><br><span class="line">function&lt;int(int,int)&gt; f = std::minus&lt;int&gt;();</span><br><span class="line"></span><br><span class="line">function&lt;int(int,int)&gt; f = mod//命名了的lambda表达式</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="function和map的配套使用"><a href="#function和map的配套使用" class="headerlink" title="function和map的配套使用"></a>function和map的配套使用</h2><p>​        function和map一般配套使用，来确定某个function的用途。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">map&lt;string,function&lt;int(int,int)&gt;&gt; binops = </span><br><span class="line">&#123;</span><br><span class="line">	&#123;&quot;+&quot;,add&#125;,						//函数指针</span><br><span class="line">	&#123;&quot;-&quot;,std::minus&lt;int&gt;()&#125;,		//标准库函数对象</span><br><span class="line">	&#123;&quot;/&quot;,&quot;divide()&quot;&#125;,				//定义的函数对象</span><br><span class="line">	&#123;&quot;*&quot;,[](int a,int b) &#123;return a*b; &#125;&#125;	//lambda表达式</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="重载的函数与function"><a href="#重载的函数与function" class="headerlink" title="重载的函数与function"></a>重载的函数与function</h2><p>​        如果函数有多种形式（重载），则不能直接将函数的名字存入function类型的对象中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int add(int a,int b)&#123; return a+b; &#125;</span><br><span class="line">string add(string a,string b)&#123;return a+b;&#125;</span><br><span class="line">function&lt;int(int,int)&gt; f = add;			//函数名其实也是函数指针，只不过函数名是一个常量指针，它的值不能改变，只能指向该函数，不能改变它的值让它指向别的函数</span><br></pre></td></tr></table></figure>
+
+<p>​        上述代码就会导致不知道存的是哪个add，解决这个问题的方法就是存储函数指针。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int (*fpi)(int,int) = add;</span><br><span class="line">string (*fps)(string,string) = add;</span><br><span class="line">function&lt;int(int,int)&gt; f = fpi;		//这个就能准确的存入想要的函数了	</span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -261,14 +269,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2022/05/27/%E7%B1%BB%E6%A8%A1%E6%9D%BF/" rel="prev" title="类模板">
-                  <i class="fa fa-chevron-left"></i> 类模板
+                <a href="/2022/12/01/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" rel="prev" title="智能指针">
+                  <i class="fa fa-chevron-left"></i> 智能指针
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2022/06/08/%E5%BC%95%E7%94%A8/" rel="next" title="引用的一般用法">
-                  引用的一般用法 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>

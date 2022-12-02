@@ -127,7 +127,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -162,6 +162,113 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://stubird.top/2022/12/02/function/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bya">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="C++成长之路">
+      <meta itemprop="description" content="记录我的C++学习历程">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | C++成长之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/12/02/function/" class="post-title-link" itemprop="url">function</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-12-02 11:12:21 / 修改时间：16:07:50" itemprop="dateCreated datePublished" datetime="2022-12-02T11:12:21+08:00">2022-12-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/12/02/function/" class="post-meta-item leancloud_visitors" data-flag-title="function" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="C-function"><a href="#C-function" class="headerlink" title="C++ function"></a>C++ function</h1><p>​        function<T> 是一个模板，当创建一个具体的function类型时我们必须提供额外的信息，这个类型主要是存储可调用对象，如函数对象，函数指针，一般与map搭配使用。需要引用<functional></p>
+<h2 id="function的初始化"><a href="#function的初始化" class="headerlink" title="function的初始化"></a>function的初始化</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function&lt;int(int,int)&gt; f;</span><br></pre></td></tr></table></figure>
+
+<p>​        上面表示 f 可以存储一个返回对象为int，参数列表为两个int的函数对象。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//首先创建一个函数对象</span><br><span class="line">class ADD</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">	int operator()(int a,int b)			//对操作符()进行了重载的类，其对象称为函数对象</span><br><span class="line">	&#123; return a+b; &#125;</span><br><span class="line">&#125;;</span><br><span class="line">ADD add;</span><br><span class="line">f = add(); </span><br><span class="line">auto ans = f(2,4);				//ans为6</span><br></pre></td></tr></table></figure>
+
+<p>​        此时f为可调用对象了。下面列举其他可存储的可调用对象：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">int (*add)(int a,int b)&#123; return a+b; &#125;;</span><br><span class="line">function&lt;int(int,int)&gt; f = add;		</span><br><span class="line"></span><br><span class="line">function&lt;int(int,int)&gt; f = [](int a,int b) &#123;return a+b; &#125;;//未命名的lambda表达式</span><br><span class="line"></span><br><span class="line">function&lt;int(int,int)&gt; f = std::minus&lt;int&gt;();</span><br><span class="line"></span><br><span class="line">function&lt;int(int,int)&gt; f = mod//命名了的lambda表达式</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="function和map的配套使用"><a href="#function和map的配套使用" class="headerlink" title="function和map的配套使用"></a>function和map的配套使用</h2><p>​        function和map一般配套使用，来确定某个function的用途。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">map&lt;string,function&lt;int(int,int)&gt;&gt; binops = </span><br><span class="line">&#123;</span><br><span class="line">	&#123;&quot;+&quot;,add&#125;,						//函数指针</span><br><span class="line">	&#123;&quot;-&quot;,std::minus&lt;int&gt;()&#125;,		//标准库函数对象</span><br><span class="line">	&#123;&quot;/&quot;,&quot;divide()&quot;&#125;,				//定义的函数对象</span><br><span class="line">	&#123;&quot;*&quot;,[](int a,int b) &#123;return a*b; &#125;&#125;	//lambda表达式</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="重载的函数与function"><a href="#重载的函数与function" class="headerlink" title="重载的函数与function"></a>重载的函数与function</h2><p>​        如果函数有多种形式（重载），则不能直接将函数的名字存入function类型的对象中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int add(int a,int b)&#123; return a+b; &#125;</span><br><span class="line">string add(string a,string b)&#123;return a+b;&#125;</span><br><span class="line">function&lt;int(int,int)&gt; f = add;			//函数名其实也是函数指针，只不过函数名是一个常量指针，它的值不能改变，只能指向该函数，不能改变它的值让它指向别的函数</span><br></pre></td></tr></table></figure>
+
+<p>​        上述代码就会导致不知道存的是哪个add，解决这个问题的方法就是存储函数指针。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int (*fpi)(int,int) = add;</span><br><span class="line">string (*fps)(string,string) = add;</span><br><span class="line">function&lt;int(int,int)&gt; f = fpi;		//这个就能准确的存入想要的函数了	</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1114,110 +1221,6 @@
 
 <p>例如：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//偏特化注意与之前的类模板参数数量保持一致</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyArray</span>&lt;<span class="type">char</span>,T&gt;</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">MyArray</span>();</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">MyArray&lt;<span class="type">char</span>, T&gt;::<span class="built_in">MyArray</span>() </span><br><span class="line">&#123;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;类模板的偏特化&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://stubird.top/2022/05/27/%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Bya">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="C++成长之路">
-      <meta itemprop="description" content="记录我的C++学习历程">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | C++成长之路">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/05/27/%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF/" class="post-title-link" itemprop="url">函数模板</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-05-27 14:47:07 / 修改时间：15:31:47" itemprop="dateCreated datePublished" datetime="2022-05-27T14:47:07+08:00">2022-05-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2022/05/27/%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF/" class="post-meta-item leancloud_visitors" data-flag-title="函数模板" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="函数模板概念"><a href="#函数模板概念" class="headerlink" title="函数模板概念"></a>函数模板概念</h1><p>函数模板是用于生成函数的模板，<strong>在编译阶段</strong>，编译器会根据函数模板的使用情况创建出<strong>函数名</strong>相同，参数类型由编译器判断的若干函数。</p>
-<p>通过函数模板创建的函数拥有相同的函数体，只是函数的参数类型不同。</p>
-<p>简而言之，函数模板就是函数逻辑相同，参数类型不同，可以使本来多个函数体变为一个函数体。</p>
-<h1 id="函数模板的使用"><a href="#函数模板的使用" class="headerlink" title="函数模板的使用"></a>函数模板的使用</h1><p><strong>函数模板的定义和声明最好放在头文件中</strong></p>
-<h2 id="函数模板的声明"><a href="#函数模板的声明" class="headerlink" title="函数模板的声明"></a>函数模板的声明</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">返回类型   函数名  （参数列表）</span><br><span class="line">&#123;</span><br><span class="line">    函数体</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如：比较两个整形和浮点是否相等，因为参数类型不同，本要写两个函数体，但是因为逻辑一样，使用函数模板的话就只需要一个函数。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="comment">//函数的声明</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">isEqual</span><span class="params">(T a,T b)</span></span>;</span><br><span class="line"><span class="comment">//函数的定义</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">isEqual</span><span class="params">(T a,T b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a==b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="函数模板的特化"><a href="#函数模板的特化" class="headerlink" title="函数模板的特化"></a>函数模板的特化</h1><p>函数模板的特化是指在实例化函数模板时，对特定类型的实参进行特殊的处理。即当<strong>实参为特定类型</strong>的时候，通过函数模板生成的函数会有不同的函数体。</p>
-<h2 id="函数模板特化的定义"><a href="#函数模板特化的定义" class="headerlink" title="函数模板特化的定义"></a>函数模板特化的定义</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;&gt;</span><br><span class="line">返回类型  函数名&lt;特定类型&gt;(参数列表)</span><br><span class="line">&#123;</span><br><span class="line">    函数体</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如：出现字符串类型进行比较，则使用==无法比较，此时需要函数模板的特化，额外添加一个函数声明。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;&gt;</span><br><span class="line"><span class="type">bool</span> <span class="built_in">isEqual</span>&lt;<span class="type">char</span>*&gt;(<span class="type">char</span>* s1,<span class="type">char</span>* s2)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">strcmp</span>(s1,s2)==<span class="number">0</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
 
 
       
