@@ -127,7 +127,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -162,6 +162,114 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://stubird.top/2023/02/22/c-11-%E6%96%B0%E7%89%B9%E6%80%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Bya">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="C++成长之路">
+      <meta itemprop="description" content="记录我的C++学习历程">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | C++成长之路">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/02/22/c-11-%E6%96%B0%E7%89%B9%E6%80%A7/" class="post-title-link" itemprop="url">c++11 新特性</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-02-22 20:30:18 / 修改时间：20:45:52" itemprop="dateCreated datePublished" datetime="2023-02-22T20:30:18+08:00">2023-02-22</time>
+    </span>
+
+  
+    <span id="/2023/02/22/c-11-%E6%96%B0%E7%89%B9%E6%80%A7/" class="post-meta-item leancloud_visitors" data-flag-title="c++11 新特性" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="c-11有哪些新特性"><a href="#c-11有哪些新特性" class="headerlink" title="c++11有哪些新特性"></a>c++11有哪些新特性</h1><h4 id="auto"><a href="#auto" class="headerlink" title="auto"></a>auto</h4><p>类型推导auto,使用他们可以在<strong>编译期</strong>就推导出变量或者表达式的类型!</p>
+<h4 id="decltype"><a href="#decltype" class="headerlink" title="decltype"></a>decltype</h4><p>decltype则用于推导表达式类型,如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> &amp;i = <span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> a = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">decltype</span>(i) b = <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<p>推导出b的类型是const int&amp;类型。</p>
+<h4 id="左值右值"><a href="#左值右值" class="headerlink" title="左值右值"></a>左值右值</h4><ul>
+<li>左值：可以取地址并且有名字的东西就是左值。</li>
+<li>右值：不能取地址的没有名字的东西就是右值。</li>
+</ul>
+<h4 id="列表初始化"><a href="#列表初始化" class="headerlink" title="列表初始化"></a>列表初始化</h4><p>C++11中可以直接在变量名后面加上初始化列表来进行对象的初始化。</p>
+<h4 id="function"><a href="#function" class="headerlink" title="function"></a>function</h4><p>c++11新增了std::function使函数调用更加方便,一般与map一起使用，方便函数的调用。</p>
+<h4 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h4><ul>
+<li>std::shared_ptr</li>
+<li>std::weak_ptr</li>
+<li>std::unique_ptr</li>
+</ul>
+<h4 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h4><ul>
+<li>std::thread相关</li>
+<li>std::mutex相关</li>
+<li>std::lock相关</li>
+</ul>
+<h4 id="基于范围的for循环"><a href="#基于范围的for循环" class="headerlink" title="基于范围的for循环"></a>基于范围的for循环</h4><p><code>vector&lt;int&gt; nums = &#123;2,3,6,1&#125;;</code></p>
+<p><code>for(int num:nums)&#123;&#125;</code></p>
+<p>方便了遍历！</p>
+<h4 id="nullptr"><a href="#nullptr" class="headerlink" title="nullptr"></a>nullptr</h4><p>c++11之前都是用NULL来表示空，但是NULL实际上是个宏，表示0，表示空指针并不准确。</p>
+<h4 id="final-amp-override"><a href="#final-amp-override" class="headerlink" title="final &amp; override"></a>final &amp; override</h4><p>c++11关于继承新增了两个关键字，final用于修饰一个类，表示禁止该类进一步派生和虚函数的进一步重载，override用于修饰派生类中的成员函数，标明该函数重写了基类函数，如果一个函数声明了override但父类却没有这个虚函数，编译报错，使用override关键字可以避免开发者在重写基类函数时无意产生的错误。</p>
+<h4 id="delete"><a href="#delete" class="headerlink" title="delete"></a>delete</h4><p>可以删除一个默认的特殊成员函数，比如thread里面的一些拷贝构造函数。</p>
+<p><code>thread(thread&amp; oth) = delete;</code></p>
+<h4 id="explicit"><a href="#explicit" class="headerlink" title="explicit"></a>explicit</h4><p>explicit专用于修饰构造函数，表示只能显式构造，不可以被隐式转换</p>
+<h4 id="constexpr"><a href="#constexpr" class="headerlink" title="constexpr"></a>constexpr</h4><p>const表示只读，但它可以修饰一个动态变量。耳constexpr修饰的是真正的常量，再编译器就会计算出来，所以尽量使用constexpr；</p>
+<h4 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h4><p>c++11新增了几种数据类型：long long、char16_t、char32_t等。</p>
+<h4 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h4><p>c++11引入了regex库更好的支持正则表达式。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1165,102 +1273,6 @@
 <p><img src="https://s2.loli.net/2022/06/08/qasvkIju7ge8KWr.png" alt="image-20220608154811190"></p>
 <p>因为此时a作为c的引用，b作为d的引用，形参改变时也会引起实参的改变，因为此时a就是c，a只是c的一个别名而已，a一改变，c也会改变。</p>
 <h4 id="结论：当需要形参修饰实参的时候，用引用传递，当不需要形参修饰实参的时候，用值传递。"><a href="#结论：当需要形参修饰实参的时候，用引用传递，当不需要形参修饰实参的时候，用值传递。" class="headerlink" title="结论：当需要形参修饰实参的时候，用引用传递，当不需要形参修饰实参的时候，用值传递。"></a>结论：当需要形参修饰实参的时候，用引用传递，当不需要形参修饰实参的时候，用值传递。</h4>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://stubird.top/2022/06/06/c-%E8%8A%B1%E6%8B%AC%E5%8F%B7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Bya">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="C++成长之路">
-      <meta itemprop="description" content="记录我的C++学习历程">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | C++成长之路">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/06/06/c-%E8%8A%B1%E6%8B%AC%E5%8F%B7/" class="post-title-link" itemprop="url">c++花括号</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-06-06 18:42:45 / 修改时间：18:59:11" itemprop="dateCreated datePublished" datetime="2022-06-06T18:42:45+08:00">2022-06-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2022/06/06/c-%E8%8A%B1%E6%8B%AC%E5%8F%B7/" class="post-meta-item leancloud_visitors" data-flag-title="c++花括号" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>​    今天看代码的时候，发现有些地方的if判断删除了，但是花括号没有删除，不知道会不会影响到里面代码的执行，如：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Dog</span>();</span><br><span class="line">    ~<span class="built_in">Dog</span>();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Dog::<span class="built_in">Dog</span>()</span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;生成一条狗&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Dog::~<span class="built_in">Dog</span>()</span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;毁灭一条狗&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *args[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;hello world&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="comment">// if(a==b)</span></span><br><span class="line">    &#123;</span><br><span class="line">    	Dog d; </span><br><span class="line">	&#125;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;hello run last&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
-
-<p>运行结果如下：</p>
-<p><img src="https://s2.loli.net/2022/06/06/iMdg6eamBAtH43C.png" alt="image-20220606185543769"></p>
-<p>再去掉花括号：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Dog</span>();</span><br><span class="line">    ~<span class="built_in">Dog</span>();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Dog::<span class="built_in">Dog</span>()</span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;生成一条狗&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Dog::~<span class="built_in">Dog</span>()</span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;毁灭一条狗&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *args[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;hello world&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="comment">// if(a==b)</span></span><br><span class="line">    </span><br><span class="line">    Dog d; </span><br><span class="line">	</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;hello run last&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>运行结果如下：</p>
-<p><img src="https://s2.loli.net/2022/06/06/JEX2ROs3zHWnuwM.png" alt="image-20220606185649437"></p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>​    花括号内的代码是一定会执行的，但是在括号内创建的对象，会在执行完括号内的代码后进行析构。</p>
-
       
     </div>
 
