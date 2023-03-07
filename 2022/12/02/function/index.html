@@ -20,15 +20,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"stubird.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="C++ function​        function 是一个模板，当创建一个具体的function类型时我们必须提供额外的信息，这个类型主要是存储可调用对象，如函数对象，函数指针，一般与map搭配使用。需要引用 function的初始化1function&lt;int(int,int)&gt; f;  ​        上面表示 f 可以存储一个返回对象为int，参数列表为两个int的函数对">
+    <meta name="description" content="C++ function​        function 是一个模板，当创建一个具体的function类型时我们必须提供额外的信息，这个类型主要是存储可调用对象，如函数对象，函数指针，一般与map搭配使用。需要引用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="function">
 <meta property="og:url" content="http://stubird.top/2022/12/02/function/index.html">
 <meta property="og:site_name" content="C++成长之路">
-<meta property="og:description" content="C++ function​        function 是一个模板，当创建一个具体的function类型时我们必须提供额外的信息，这个类型主要是存储可调用对象，如函数对象，函数指针，一般与map搭配使用。需要引用 function的初始化1function&lt;int(int,int)&gt; f;  ​        上面表示 f 可以存储一个返回对象为int，参数列表为两个int的函数对">
+<meta property="og:description" content="C++ function​        function 是一个模板，当创建一个具体的function类型时我们必须提供额外的信息，这个类型主要是存储可调用对象，如函数对象，函数指针，一般与map搭配使用。需要引用">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-12-02T03:12:21.000Z">
-<meta property="article:modified_time" content="2022-12-02T08:14:57.997Z">
+<meta property="article:modified_time" content="2023-03-07T01:50:40.552Z">
 <meta property="article:author" content="Bya">
 <meta name="twitter:card" content="summary">
 
@@ -203,9 +203,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-12-02 11:12:21 / 修改时间：16:14:57" itemprop="dateCreated datePublished" datetime="2022-12-02T11:12:21+08:00">2022-12-02</time>
+      <time title="创建时间：2022-12-02 11:12:21" itemprop="dateCreated datePublished" datetime="2022-12-02T11:12:21+08:00">2022-12-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-07 09:50:40" itemprop="dateModified" datetime="2023-03-07T09:50:40+08:00">2023-03-07</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -235,6 +241,8 @@
     
     <div class="post-body" itemprop="articleBody">
         <h1 id="C-function"><a href="#C-function" class="headerlink" title="C++ function"></a>C++ function</h1><p>​        function<T> 是一个模板，当创建一个具体的function类型时我们必须提供额外的信息，这个类型主要是存储可调用对象，如函数对象，函数指针，一般与map搭配使用。需要引用<functional></p>
+<span id="more"></span>
+
 <h2 id="function的初始化"><a href="#function的初始化" class="headerlink" title="function的初始化"></a>function的初始化</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function&lt;int(int,int)&gt; f;</span><br></pre></td></tr></table></figure>
 
 <p>​        上面表示 f 可以存储一个返回对象为int，参数列表为两个int的函数对象。例如：</p>

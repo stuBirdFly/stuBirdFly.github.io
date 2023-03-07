@@ -207,7 +207,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-02-23 21:10:29" itemprop="dateModified" datetime="2023-02-23T21:10:29+08:00">2023-02-23</time>
+      <time title="修改时间：2023-03-07 09:51:16" itemprop="dateModified" datetime="2023-03-07T09:51:16+08:00">2023-03-07</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -237,23 +237,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <h1 id="配置模块"><a href="#配置模块" class="headerlink" title="配置模块"></a>配置模块</h1><h2 id="配置模块的用途"><a href="#配置模块的用途" class="headerlink" title="配置模块的用途"></a>配置模块的用途</h2><p>主要用于解析<code>yaml</code>文档，并且从配置文件中加载更改用户配置。</p>
-<h2 id="ConfigVarBase"><a href="#ConfigVarBase" class="headerlink" title="ConfigVarBase"></a><code>ConfigVarBase</code></h2><p><code>ConfigVarBase</code>: 配置项基类，虚基类，定义了配置项公有的成员和方法。对每个配置项都包括名称和描述两项成员，以及<code>toString/fromString</code>两个纯虚函数方法。<code>ConfigVarBase</code>并不包含配置项类型和值，这些由继承类实现，由继承类实现的还包括具体类型的<code>toString/fromString</code>方法，用于和<code>YAML</code>字符串进行相互转换。</p>
-<p><code>toString/fromString</code>提供了类型的转换，<code>class FromStr = LexicalCast&lt;std::string,T&gt;,class ToStr = LexicalCast&lt;T,std::string</code>&gt;主要是模板函数的具体类型实现。模板函数如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">template&lt;class  F,class T&gt;</span><br><span class="line">class LexicalCast</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">	T operator()(const F&amp; v)</span><br><span class="line">	&#123;</span><br><span class="line">		return boost::lexical_cast&lt;T&gt;(v);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;;	</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h2 id="ConfigVar"><a href="#ConfigVar" class="headerlink" title="ConfigVar"></a><code>ConfigVar</code></h2><h4 id="偏特化实现类型转换"><a href="#偏特化实现类型转换" class="headerlink" title="偏特化实现类型转换"></a>偏特化实现类型转换</h4><p><code>ConfigVar</code>: 具体的配置参数类，继承自<code>ConfigVarBase</code>，并且是一个模板类，有3个模板参数。第一个模板参数是类型T，表示配置项的类型。另外两个模板参数是<code>FromStr和ToStr</code>，这两个参数是仿函数，<code>FromStr</code>用于将<code>YAML</code>字符串转类型T，<code>ToStr</code>用于将T转<code>YAML</code>字符串。这两个模板参数具有默认值<code>LexicalCast&lt;std::string, T&gt;</code>和<code>LexicalCast&lt;T, std::string&gt;</code>，根据不同的类型T，<code>FromStr</code>和<code>ToStr</code>具有不同的偏特化实现，实现了容器与字符串的转换。</p>
-<p>实现代码如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line">//解析YAML格式</span><br><span class="line">#define CastVec(stdVec,pushWay) \</span><br><span class="line">	template&lt;class  T&gt; \</span><br><span class="line">	class LexicalCast&lt;std::string,std::stdVec&lt;T&gt;&gt; \</span><br><span class="line">	&#123; \</span><br><span class="line">	public: \</span><br><span class="line">		std::stdVec&lt;T&gt; operator()(const std::string&amp; v) \</span><br><span class="line">		&#123; \</span><br><span class="line">			YAML::Node node = YAML::Load(v); \</span><br><span class="line">			typename std::stdVec&lt;T&gt; vec; \</span><br><span class="line">			std::stringstream ss; \</span><br><span class="line">			for(size_t i = 0;i&lt;node.size();++i) \</span><br><span class="line">			&#123; \</span><br><span class="line">				ss.str(&quot;&quot;); \</span><br><span class="line">				ss&lt;&lt;node[i]; \</span><br><span class="line">				vec.pushWay(LexicalCast&lt;std::string ,T&gt;()(ss.str())); \</span><br><span class="line">			&#125; \</span><br><span class="line">			return vec; \</span><br><span class="line">		&#125; \</span><br><span class="line">	&#125;;	\</span><br><span class="line">	template&lt;class  F&gt; \</span><br><span class="line">	class LexicalCast&lt;std::stdVec&lt;F&gt;,std::string&gt; \</span><br><span class="line">	&#123; \</span><br><span class="line">	public: \</span><br><span class="line">		std::string operator()(const std::stdVec&lt;F&gt;&amp; v) \</span><br><span class="line">		&#123; \</span><br><span class="line">			YAML::Node node; \</span><br><span class="line">			for(auto i:v) \</span><br><span class="line">			&#123; \</span><br><span class="line">				node.push_back(YAML::Load(LexicalCast&lt;F,std::string&gt;()(i))); \</span><br><span class="line">			&#125; \</span><br><span class="line">			std::stringstream ss(&quot;&quot;); \</span><br><span class="line">			ss&lt;&lt;node; \</span><br><span class="line">			return ss.str(); \</span><br><span class="line">		&#125; \</span><br><span class="line">	&#125;;	</span><br><span class="line"></span><br><span class="line">	CastVec(vector,push_back)</span><br><span class="line">	CastVec(list,push_back)</span><br><span class="line">	CastVec(set,insert)</span><br><span class="line">	CastVec(unordered_set,insert)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#undef CastVec</span><br><span class="line"></span><br><span class="line">	// 解析Map格式，将String转换为Map</span><br><span class="line">	template&lt;class  T&gt; </span><br><span class="line">	class LexicalCast&lt;std::string,std::map&lt;std::string,T&gt;&gt; </span><br><span class="line">	&#123; </span><br><span class="line">	public: </span><br><span class="line">		std::map&lt;std::string,T&gt; operator()(const std::string&amp; v) </span><br><span class="line">		&#123; </span><br><span class="line">			YAML::Node node = YAML::Load(v); </span><br><span class="line">			typename std::map&lt;std::string,T&gt; vec; </span><br><span class="line">			std::stringstream ss; </span><br><span class="line">			for(auto it = node.begin();it!=node.end();it++) </span><br><span class="line">			&#123; </span><br><span class="line">				ss.str(&quot;&quot;); </span><br><span class="line">				ss&lt;&lt;it-&gt;second; </span><br><span class="line">				vec.insert(std::make_pair(it-&gt;first.Scalar(),LexicalCast&lt;std::string ,T&gt;()(ss.str()))); </span><br><span class="line">			&#125; </span><br><span class="line">			return vec; </span><br><span class="line">		&#125; </span><br><span class="line">	&#125;;	</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	// 解析Map格式，将Map转换为String</span><br><span class="line">	template&lt;class  F&gt; </span><br><span class="line">	class LexicalCast&lt;std::map&lt;std::string,F&gt;,std::string&gt; </span><br><span class="line">	&#123; </span><br><span class="line">	public: </span><br><span class="line">		std::string operator()(const std::map&lt;std::string,F&gt;&amp; v) </span><br><span class="line">		&#123; </span><br><span class="line">			YAML::Node node; </span><br><span class="line">			for(auto it = v.begin();it!=v.end();it++) </span><br><span class="line">			&#123; </span><br><span class="line">				node[it-&gt;first] = YAML::Load(LexicalCast&lt;F,std::string&gt;()(it-&gt;second));</span><br><span class="line">			&#125; </span><br><span class="line">			std::stringstream ss(&quot;&quot;); </span><br><span class="line">			ss&lt;&lt;node; </span><br><span class="line">			return ss.str(); </span><br><span class="line">		&#125; </span><br><span class="line">	&#125;;	</span><br><span class="line"></span><br><span class="line">	// 解析unordered_map格式，将String转换为unordered_map</span><br><span class="line">	template&lt;class  T&gt; </span><br><span class="line">	class LexicalCast&lt;std::string,std::unordered_map&lt;std::string,T&gt;&gt; </span><br><span class="line">	&#123; </span><br><span class="line">	public: </span><br><span class="line">		std::unordered_map&lt;std::string,T&gt; operator()(const std::string&amp; v) </span><br><span class="line">		&#123; </span><br><span class="line">			YAML::Node node = YAML::Load(v); </span><br><span class="line">			typename std::unordered_map&lt;std::string,T&gt; vec; </span><br><span class="line">			std::stringstream ss; </span><br><span class="line">			for(auto it = node.begin();it!=node.end();it++) </span><br><span class="line">			&#123; </span><br><span class="line">				ss.str(&quot;&quot;); </span><br><span class="line">				ss&lt;&lt;it-&gt;second; </span><br><span class="line">				vec.insert(std::make_pair(it-&gt;first.Scalar(),LexicalCast&lt;std::string ,T&gt;()(ss.str()))); </span><br><span class="line">			&#125; </span><br><span class="line">			return vec; </span><br><span class="line">		&#125; </span><br><span class="line">	&#125;;	</span><br><span class="line"></span><br><span class="line">	// 解析unordered_map格式，将unordered_map转换为String</span><br><span class="line">	template&lt;class  F&gt; </span><br><span class="line">	class LexicalCast&lt;std::unordered_map&lt;std::string,F&gt;,std::string&gt; </span><br><span class="line">	&#123; </span><br><span class="line">	public: </span><br><span class="line">		std::string operator()(const std::unordered_map&lt;std::string,F&gt;&amp; v) </span><br><span class="line">		&#123; </span><br><span class="line">			YAML::Node node; </span><br><span class="line">			for(auto it = v.begin();it!=v.end();it++) </span><br><span class="line">			&#123; </span><br><span class="line">				node[it-&gt;first] = YAML::Load(LexicalCast&lt;F,std::string&gt;()(it-&gt;second));</span><br><span class="line">			&#125; </span><br><span class="line">			std::stringstream ss(&quot;&quot;); </span><br><span class="line">			ss&lt;&lt;node; </span><br><span class="line">			return ss.str(); </span><br><span class="line">		&#125; </span><br><span class="line">	&#125;;	</span><br></pre></td></tr></table></figure>
-
-
-
-<p><code>ConfigVar</code>类在<code>ConfigVarBase</code>上基础上包含了一个T类型的成员和一个变更回调函数数组(<strong>listener函数</strong>)，此外，<code>ConfigVar</code>还提供了<code>setValue/getValue</code>方法用于获取/更新配置值（更新配置时会一并触发全部的配置变更回调函数），以及<code>addListener/delListener</code>方法用于添加或删除配置变更回调函数。</p>
-<h2 id="Config"><a href="#Config" class="headerlink" title="Config"></a><code>Config</code></h2><p>​        <code>ConfigVar</code>的管理类，负责托管全部的<code>ConfigVar</code>对象，单例模式。提供<code>Lookup</code>方法，用于根据配置名称查询配置项。如果调用<code>Lookup</code>查询时同时提供了默认值和配置项的描述信息，那么在未找到对应的配置时，会自动创建一个对应的配置项（<strong>用正则表达式验证合法性</strong>），这样就保证了配置模块定义即可用的特性（相当于构造函数和查找函数）。除此外，<code>Config</code>类还提供了<code>LoadFromYaml</code>和<code>LoadFromConfDir</code>两个方法，用于从<code>YAML</code>对象或从命令行-c选项指定的配置文件路径中加载配置。<code>Config</code>的全部成员变量和方法都是static类型，保证了全局只有一个实例。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/02/22/%E9%85%8D%E7%BD%AE%E6%A8%A1%E5%9D%97/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -315,7 +306,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-02-23 21:12:21" itemprop="dateModified" datetime="2023-02-23T21:12:21+08:00">2023-02-23</time>
+      <time title="修改时间：2023-03-07 09:49:49" itemprop="dateModified" datetime="2023-03-07T09:49:49+08:00">2023-03-07</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -345,38 +336,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <h1 id="c-11有哪些新特性"><a href="#c-11有哪些新特性" class="headerlink" title="c++11有哪些新特性"></a>c++11有哪些新特性</h1><h4 id="auto"><a href="#auto" class="headerlink" title="auto"></a>auto</h4><p>类型推导auto,使用他们可以在<strong>编译期</strong>就推导出变量或者表达式的类型!</p>
-<h4 id="decltype"><a href="#decltype" class="headerlink" title="decltype"></a>decltype</h4><p>decltype则用于推导表达式类型,如：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> &amp;i = <span class="number">1</span>;</span><br><span class="line"><span class="type">int</span> a = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">decltype</span>(i) b = <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
-
-<p>推导出b的类型是const int&amp;类型。</p>
-<h4 id="左值右值"><a href="#左值右值" class="headerlink" title="左值右值"></a>左值右值</h4><ul>
-<li>左值：可以取地址并且有名字的东西就是左值。</li>
-<li>右值：不能取地址的没有名字的东西就是右值。</li>
-</ul>
-<h4 id="列表初始化"><a href="#列表初始化" class="headerlink" title="列表初始化"></a>列表初始化</h4><p>C++11中可以直接在变量名后面加上初始化列表来进行对象的初始化。</p>
-<h4 id="function"><a href="#function" class="headerlink" title="function"></a>function</h4><p>c++11新增了std::function使函数调用更加方便,一般与map一起使用，方便函数的调用。</p>
-<h4 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h4><ul>
-<li>std::shared_ptr</li>
-<li>std::weak_ptr</li>
-<li>std::unique_ptr</li>
-</ul>
-<h4 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h4><ul>
-<li>std::thread相关</li>
-<li>std::mutex相关</li>
-<li>std::lock相关</li>
-</ul>
-<h4 id="基于范围的for循环"><a href="#基于范围的for循环" class="headerlink" title="基于范围的for循环"></a>基于范围的for循环</h4><p><code>vector&lt;int&gt; nums = &#123;2,3,6,1&#125;;</code></p>
-<p><code>for(int num:nums)&#123;&#125;</code></p>
-<p>方便了遍历！</p>
-<h4 id="nullptr"><a href="#nullptr" class="headerlink" title="nullptr"></a>nullptr</h4><p>c++11之前都是用NULL来表示空，但是NULL实际上是个宏，表示0，表示空指针并不准确。</p>
-<h4 id="final-amp-override"><a href="#final-amp-override" class="headerlink" title="final &amp; override"></a>final &amp; override</h4><p>c++11关于继承新增了两个关键字，final用于修饰一个类，表示禁止该类进一步派生和虚函数的进一步重载，override用于修饰派生类中的成员函数，标明该函数重写了基类函数，如果一个函数声明了override但父类却没有这个虚函数，编译报错，使用override关键字可以避免开发者在重写基类函数时无意产生的错误。</p>
-<h4 id="delete"><a href="#delete" class="headerlink" title="delete"></a>delete</h4><p>可以删除一个默认的特殊成员函数，比如thread里面的一些拷贝构造函数。</p>
-<p><code>thread(thread&amp; oth) = delete;</code></p>
-<h4 id="explicit"><a href="#explicit" class="headerlink" title="explicit"></a>explicit</h4><p>explicit专用于修饰构造函数，表示只能显式构造，不可以被隐式转换</p>
-<h4 id="constexpr"><a href="#constexpr" class="headerlink" title="constexpr"></a>constexpr</h4><p>const表示只读，但它可以修饰一个动态变量。耳constexpr修饰的是真正的常量，再编译器就会计算出来，所以尽量使用constexpr；</p>
-<h4 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h4><p>c++11新增了几种数据类型：long long、char16_t、char32_t等。</p>
-<h4 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h4><p>c++11引入了regex库更好的支持正则表达式。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/02/22/c-11-%E6%96%B0%E7%89%B9%E6%80%A7/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -430,9 +397,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2023-02-16 08:33:24 / 修改时间：10:03:36" itemprop="dateCreated datePublished" datetime="2023-02-16T08:33:24+08:00">2023-02-16</time>
+      <time title="创建时间：2023-02-16 08:33:24" itemprop="dateCreated datePublished" datetime="2023-02-16T08:33:24+08:00">2023-02-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-07 09:51:26" itemprop="dateModified" datetime="2023-03-07T09:51:26+08:00">2023-03-07</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -462,55 +435,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <h1 id="日志模块"><a href="#日志模块" class="headerlink" title="日志模块"></a>日志模块</h1><p>用于格式化输出程序日志，方便从日志中定位程序运行过程中出现的问题。这里的日志除了日志内容本身之外，还应该包括文件名/行号，时间戳，线程/协程号，模块名称，日志级别等额外信息，甚至在打印致命的日志时，还应该附加程序的栈回溯信息，以便于分析和排查问题。</p>
-<p>从设计上看，一个完整的日志模块应该具备以下功能：</p>
-<ol>
-<li><p>区分不同的级别，比如常的DEBUG/INFO/WARN/ERROR等级别。日志模块可以通过指定级别实现只输出某个级别以上的日志，这样可以灵活开关一些不重要的日志输出，比如程序在调试阶段可以设置一个较低的级别，以便看到更多的调度日志信息，程序发布之后可以设置一个较高的级别，以减少日志输出，提高性能。</p>
-</li>
-<li><p>区分不同的输出地。不同的日志可以输出到不同的位置，比如可以输出到标准输出，输出到文件，输出到syslog，输出到网络上的日志服务器等，甚至同一条日志可以同时输出到多个输出地。</p>
-</li>
-<li><p>区分不同的类别。日志可以分类并命名，一个程序的各个模块可以使用不同的名称来输出日志，这样可以很方便地判断出当前日志是哪个程序模块输出的。</p>
-</li>
-<li><p>日志格式可灵活配置。可以按需指定每条日志是否包含文件名/行号、时间戳、线程/协程号、日志级别、启动时间等内容。</p>
-<ol start="5">
-<li><p>可通过配置文件的方式配置以上功能。</p>
-<p><img src="https://s2.loli.net/2023/02/16/3x5en8m9S1coVEG.png" alt="image-20230216093911454">                                                                                                <strong>日志框架图</strong></p>
-</li>
-</ol>
-</li>
-</ol>
-<h2 id="日志器"><a href="#日志器" class="headerlink" title="日志器"></a>日志器</h2><p><code>Logger</code>: 日志器，负责进行日志输出。一个Logger包含多个LogAppender和一个日志级别，提供log方法和一个默认的日志格式，传入日志事件，判断该日志事件的级别高于日志器本身的级别之后调用LogAppender将日志进行输出，否则该日志被抛弃。</p>
-<p>用宏定义日志事件的输出：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> SYLAR_LOG_LEVEL(logger,level) \</span></span><br><span class="line"><span class="meta">	<span class="keyword">if</span>(logger-&gt;getLevel() &lt;= level) \</span></span><br><span class="line"><span class="meta">		sylar::LogEventWrap(sylar::LogEvent::ptr(new sylar::LogEvent(logger,level,__FILE__,__LINE__,0,sylar::GetThreadId(),sylar::GetFiberId(),time(0)))).getSS()</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SYLAR_LOG_DEBUG(logger)  SYLAR_LOG_LEVEL(logger,sylar::LogLevel::DEBUG)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SYLAR_LOG_INFO(logger)  SYLAR_LOG_LEVEL(logger,sylar::LogLevel::INFO)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SYLAR_LOG_WARN(logger)  SYLAR_LOG_LEVEL(logger,sylar::LogLevel::WARN)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SYLAR_LOG_ERROR(logger)  SYLAR_LOG_LEVEL(logger,sylar::LogLevel::ERROR)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SYLAR_LOG_FATAL(logger)  SYLAR_LOG_LEVEL(logger,sylar::LogLevel::FATAL)</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p>对于需要修改默认日志格式的宏定义：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> SYLAR_LOG_FMT_LEVEL(logger,level,fmt,...) \</span></span><br><span class="line"><span class="meta">	<span class="keyword">if</span>(logger-&gt;getLevel() &lt;= level) \</span></span><br><span class="line"><span class="meta">		sylar::LogEventWrap(sylar::LogEvent::ptr(new sylar::LogEvent(logger,level,__FILE__,__LINE__,0,sylar::GetThreadId(),sylar::GetFiberId(),time(0)))).getEvent()-&gt;format(fmt,__VA_ARGS__)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SYLAR_LOG_FMT_DEBUG(logger, fmt, ...) SYLAR_LOG_FMT_LEVEL(logger, sylar::LogLevel::DEBUG, fmt, __VA_ARGS__)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SYLAR_LOG_FMT_INFO(logger, fmt, ...)  SYLAR_LOG_FMT_LEVEL(logger,sylar::LogLevel::INFO,fmt,__VA_ARGS__)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SYLAR_LOG_FMT_WARN(logger, fmt, ...)  SYLAR_LOG_FMT_LEVEL(logger,sylar::LogLevel::WARN,fmt,__VA_ARGS__)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SYLAR_LOG_FMT_ERROR(logger, fmt, ...)  SYLAR_LOG_FMT_LEVEL(logger,sylar::LogLevel::ERROR,fmt,__VA_ARGS__)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SYLAR_LOG_FMT_FATAL(logger, fmt, ...)  SYLAR_LOG_FMT_LEVEL(logger,sylar::LogLevel::FATAL,fmt,__VA_ARGS__)</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="日志事件"><a href="#日志事件" class="headerlink" title="日志事件"></a>日志事件</h2><p><code>LogEvent</code>: 日志事件，用于记录日志现场，比如该日志的级别，文件名/行号，日志消息，线程/协程号，所属日志器名称等。</p>
-<h2 id="日志输出地"><a href="#日志输出地" class="headerlink" title="日志输出地"></a>日志输出地</h2><p><code>LogAppender</code>: 日志输出器，用于将一个日志事件输出到对应的输出地。该类内部包含一个LogFormatter成员和一个log方法，日志事件先经过LogFormatter格式化后再输出到对应的输出地。从这个类可以派生出不同的Appender类型，比如StdoutLogAppender和FileLogAppender，分别表示输出到终端和文件。</p>
-<h3 id="控制台输出"><a href="#控制台输出" class="headerlink" title="控制台输出"></a>控制台输出</h3><p><code>StdoutLogAppender</code>:控制台输出，用于将日志事件打印到控制台，继承LogAppender类，并实现log方法。</p>
-<h3 id="文件输出"><a href="#文件输出" class="headerlink" title="文件输出"></a>文件输出</h3><p><code>FileLogAppender</code>:文件输出，用于将日志事件输出到log.txt文件中，继承LogAppender类，并实现log方法。<strong>在析构中进行文件资源的关闭回收。</strong></p>
-<h2 id="日志格式"><a href="#日志格式" class="headerlink" title="日志格式"></a>日志格式</h2><p><code>LogFormatter</code>: 日志格式器，用于格式化一个日志事件。该类构建时可以指定pattern，表示如何进行格式化。提供format方法，用于将日志事件格式化成字符串。在构造的时候进行传入格式的解析，并将解析后的结果存入相应的appender；</p>
-<p><strong>解析如下：</strong>（c++11新特性function对象）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">static std::map&lt;std::string, std::function&lt;FormatItem::ptr(const std::string)&gt;&gt; s_format_items = &#123;</span><br><span class="line">#define XX(str,C) \</span><br><span class="line">		&#123;str,[] (const std::string&amp; fmt) &#123; return FormatItem::ptr(new C(fmt)); &#125;&#125;</span><br><span class="line"></span><br><span class="line">		XX(&quot;m&quot;,MessageFormatItem),</span><br><span class="line">		XX(&quot;p&quot;, LevelFormatItem),</span><br><span class="line">		XX(&quot;r&quot;, ElapseFormatItem),</span><br><span class="line">		XX(&quot;c&quot;, NameFormatItem),</span><br><span class="line">		XX(&quot;t&quot;, ThreadIdFormatterItem),</span><br><span class="line">		XX(&quot;n&quot;, NewLineFormatterItem),</span><br><span class="line">		XX(&quot;d&quot;, DataTimeIdFormatterItem),</span><br><span class="line">		XX(&quot;f&quot;, FilenameFormatterItem),</span><br><span class="line">		XX(&quot;l&quot;, LineFormatterItem),</span><br><span class="line">		XX(&quot;T&quot;, TabFormatterItem),</span><br><span class="line">		XX(&quot;F&quot;, FiberIdFormatterItem),</span><br><span class="line"></span><br><span class="line">#undef XX</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="日志级别"><a href="#日志级别" class="headerlink" title="日志级别"></a>日志级别</h2><p><code>LogLevel:</code>日志级别，定义为一个元组：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">enum` `Level &#123;</span><br><span class="line">  /// 致命情况，系统不可用</span><br><span class="line">  FATAL = 0,</span><br><span class="line">  /// 高优先级情况，例如数据库系统崩溃</span><br><span class="line">  ALERT = 100,</span><br><span class="line">  /// 严重错误，例如硬盘错误</span><br><span class="line">  CRIT  = 200,</span><br><span class="line">  /// 错误</span><br><span class="line">  ERROR = 300,</span><br><span class="line">  /// 警告</span><br><span class="line">  WARN  = 400,</span><br><span class="line">  /// 正常但值得注意</span><br><span class="line">  NOTICE = 500,</span><br><span class="line">  /// 一般信息</span><br><span class="line">  INFO  = 600,</span><br><span class="line">  /// 调试信息</span><br><span class="line">  DEBUG = 700,</span><br><span class="line">  /// 未设置</span><br><span class="line">  NOTSET = 800,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="日志事件包装类"><a href="#日志事件包装类" class="headerlink" title="日志事件包装类"></a>日志事件包装类</h2><p><code>LogEventWrap</code>，在日志现场构造，包装了日志器和日志事件两个对象，在日志记录结束后，LogEventWrap析构时，调用日志器的log方法输出日志事件。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">LogEventWrap::~<span class="built_in">LogEventWrap</span>()</span><br><span class="line">&#123;</span><br><span class="line">	m_event-&gt;<span class="built_in">getLogger</span>()-&gt;<span class="built_in">log</span>(m_event-&gt;<span class="built_in">getLevel</span>(),m_event);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="日志管理类"><a href="#日志管理类" class="headerlink" title="日志管理类"></a>日志管理类</h2><p><code>LogManager</code>日志器管理类，单例模式，用于统一管理全部的日志器，提供getLogger()方法用于创建/获取日志器。内部维护一个名称到日志器的map，当获取的日志器存在时，直接返回对应的日志器指针，否则创建对应的日志器并返回。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/02/16/%E6%97%A5%E5%BF%97%E6%A8%A1%E5%9D%97/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -564,9 +496,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-12-02 11:12:21 / 修改时间：16:14:57" itemprop="dateCreated datePublished" datetime="2022-12-02T11:12:21+08:00">2022-12-02</time>
+      <time title="创建时间：2022-12-02 11:12:21" itemprop="dateCreated datePublished" datetime="2022-12-02T11:12:21+08:00">2022-12-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-07 09:50:40" itemprop="dateModified" datetime="2023-03-07T09:50:40+08:00">2023-03-07</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -596,28 +534,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <h1 id="C-function"><a href="#C-function" class="headerlink" title="C++ function"></a>C++ function</h1><p>​        function<T> 是一个模板，当创建一个具体的function类型时我们必须提供额外的信息，这个类型主要是存储可调用对象，如函数对象，函数指针，一般与map搭配使用。需要引用<functional></p>
-<h2 id="function的初始化"><a href="#function的初始化" class="headerlink" title="function的初始化"></a>function的初始化</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function&lt;int(int,int)&gt; f;</span><br></pre></td></tr></table></figure>
-
-<p>​        上面表示 f 可以存储一个返回对象为int，参数列表为两个int的函数对象。例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//首先创建一个函数对象</span><br><span class="line">class ADD</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">	int operator()(int a,int b)			//对操作符()进行了重载的类，其对象称为函数对象</span><br><span class="line">	&#123; return a+b; &#125;</span><br><span class="line">&#125;;</span><br><span class="line">ADD add;</span><br><span class="line">f = add(); </span><br><span class="line">auto ans = f(2,4);				//ans为6</span><br></pre></td></tr></table></figure>
-
-<p>​        此时f为可调用对象了。下面列举其他可存储的可调用对象：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">int (*add)(int a,int b)&#123; return a+b; &#125;;</span><br><span class="line">function&lt;int(int,int)&gt; f = add;		</span><br><span class="line"></span><br><span class="line">function&lt;int(int,int)&gt; f = [](int a,int b) &#123;return a+b; &#125;;//未命名的lambda表达式</span><br><span class="line"></span><br><span class="line">function&lt;int(int,int)&gt; f = std::minus&lt;int&gt;();</span><br><span class="line"></span><br><span class="line">function&lt;int(int,int)&gt; f = mod//命名了的lambda表达式</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="function和map的配套使用"><a href="#function和map的配套使用" class="headerlink" title="function和map的配套使用"></a>function和map的配套使用</h2><p>​        function和map一般配套使用，来确定某个function的用途。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">map&lt;string,function&lt;int(int,int)&gt;&gt; binops = </span><br><span class="line">&#123;</span><br><span class="line">	&#123;&quot;+&quot;,add&#125;,						//函数指针</span><br><span class="line">	&#123;&quot;-&quot;,std::minus&lt;int&gt;()&#125;,		//标准库函数对象</span><br><span class="line">	&#123;&quot;/&quot;,&quot;divide()&quot;&#125;,				//定义的函数对象</span><br><span class="line">	&#123;&quot;*&quot;,[](int a,int b) &#123;return a*b; &#125;&#125;	//lambda表达式</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="重载的函数与function"><a href="#重载的函数与function" class="headerlink" title="重载的函数与function"></a>重载的函数与function</h2><p>​        如果函数有多种形式（重载），则不能直接将函数的名字存入function类型的对象中。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int add(int a,int b)&#123; return a+b; &#125;</span><br><span class="line">string add(string a,string b)&#123;return a+b;&#125;</span><br><span class="line">function&lt;int(int,int)&gt; f = add;			//函数名其实也是函数指针，只不过函数名是一个常量指针，它的值不能改变，只能指向该函数，不能改变它的值让它指向别的函数</span><br></pre></td></tr></table></figure>
-
-<p>​        上述代码就会导致不知道存的是哪个add，解决这个问题的方法就是存储函数指针。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int (*fpi)(int,int) = add;</span><br><span class="line">string (*fps)(string,string) = add;</span><br><span class="line">function&lt;int(int,int)&gt; f = fpi;		//这个就能准确的存入想要的函数了	</span><br></pre></td></tr></table></figure>
-
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/12/02/function/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -679,7 +603,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-02 16:15:09" itemprop="dateModified" datetime="2022-12-02T16:15:09+08:00">2022-12-02</time>
+      <time title="修改时间：2023-03-07 09:51:55" itemprop="dateModified" datetime="2023-03-07T09:51:55+08:00">2023-03-07</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -709,73 +633,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <h1 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h1><p><strong>为什么需要智能指针</strong></p>
-<h3 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h3><p>看下面一段代码</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span>  <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> *p = <span class="keyword">new</span> <span class="built_in">int</span>(<span class="number">100</span>);</span><br><span class="line">        *p = <span class="number">20</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    *p = <span class="number">30</span>;<span class="comment">//error</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>​        当p结束了它的生命周期的时候，p已经无法再被使用了，而操作系统已经为p指向的int内容分配了内存。这会导致这块内存没有被销毁，而又无法再被访问了，这叫做内存泄漏。</p>
-<p>​        当越来越多的内存泄露以后，会导致内存耗尽。因此对于使用new申请的内存，在生命周期结束的时候我们要手动delete，因此传统的指针都是new和delete配套使用的。</p>
-<h3 id="智能指针-1"><a href="#智能指针-1" class="headerlink" title="智能指针"></a>智能指针</h3><p>​        手动的管理内存对于程序员来说是一件比较麻烦的事，而且有时候我们经常会忘记手动释放内存，因此C++11推出了<strong>智能指针</strong>这个概念。</p>
-<p>​        使用智能指针的时候，我们不需要关心什么时候释放内存，因为操作系统会在指针销毁的时候自动去释放指向的那部分内存。而智能指针又分为三类，分别是<strong>shared_ptr</strong>和<strong>unique_ptr</strong>及<strong>weak_ptr</strong>.</p>
-<h4 id="shared-ptr"><a href="#shared-ptr" class="headerlink" title="shared_ptr"></a>shared_ptr</h4><p>​        智能指针都定义在<memory>的头文件中，因此在使用的时候要引入memory头文件。</p>
-<p>​        shared_ptr是共享指针，它允许多个指针指向同一个对象，并且允许拷贝和复制操作。</p>
-<p>​        下面是共享指针p1的定义和初始化:</p>
-<p>​        </p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::shared_ptr&lt;string&gt; p1; <span class="comment">//&lt;&gt;是指针指向的类型</span></span><br><span class="line">p1 = <span class="built_in">make_shared</span>&lt;string&gt;(<span class="number">10</span>,<span class="string">&#x27;s&#x27;</span>); <span class="comment">//p1指向个&quot;ssssssssss&quot;的string</span></span><br></pre></td></tr></table></figure>
-
-<p>​        在初始化的时候，（）里面的内容必须要是string的某个构造函数。</p>
-<h5 id="shared-ptr的拷贝和赋值"><a href="#shared-ptr的拷贝和赋值" class="headerlink" title="shared_ptr的拷贝和赋值"></a>shared_ptr的拷贝和赋值</h5><p>​        当进行拷贝和赋值操作的时候，每个shared_ptr都会记录有多少个其他的shared_ptr指向相同的对象：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">auto p = make_shared&lt;int&gt;(43); //p指向的对象只有p一个，因此计数器的值为1</span><br><span class="line">auto q(p);   //用p给q进行拷贝构造，q也指向p所指向的对象，因此计数器的值为2</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="shared-ptr是怎么释放内存的"><a href="#shared-ptr是怎么释放内存的" class="headerlink" title="shared_ptr是怎么释放内存的"></a>shared_ptr是怎么释放内存的</h5><p>​        在shared_ptr的内部有个计数器，记录了当前有多少个shared_ptr指向当前对象，每当一个shared_ptr指向了这个对象，计数器的值便会加一。而每当一个指针被销毁的时候，或者不再指向这个对象的时候，计数器的值便会减一。当计数器的值为0的时候，shared_ptr类会自动销毁此对象并释放内存。它是通过一个特殊的成员函数——析构函数来完成销毁工作的。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">auto p = make_shared&lt;int&gt;(43); //p指向的对象只有p一个，因此计数器的值为1</span><br><span class="line">auto q = make_shared&lt;int&gt;(42);   //q指向的对象只有q一个，因此计数器的值为1</span><br><span class="line">p = q;				//用q给p赋值，此时递增q指向对象的引用计数</span><br><span class="line">					//递减p指向对象的引用计数，若p原来指向对象的引用计数为0，则释放之前那块内存</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="shared-ptr和new的结合使用"><a href="#shared-ptr和new的结合使用" class="headerlink" title="shared_ptr和new的结合使用"></a>shared_ptr和new的结合使用</h5><p>​        我们可以用new返回的指针来初始化智能指针</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::shared_ptr&lt;int&gt; p = new int(20);	//错误，不能将一个内置的指针隐式的转换为一个智能指针</span><br><span class="line">std::shared_ptr&lt;int&gt; p(new int(20));	//正确，使用了直接初始化形式</span><br></pre></td></tr></table></figure>
-
-<p>​        但非常不建议混合使用内置指针和智能指针</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">void test(std::shared_ptr&lt;int&gt; p)</span><br><span class="line">&#123;</span><br><span class="line">	return;</span><br><span class="line">&#125;//p指向对象的引用计数会减1</span><br><span class="line">int *q = new int(20);</span><br><span class="line">test(q);	//p指向对象的引用计数为1</span><br><span class="line">*q = 18;	//错误，因为test调用后，p离开作用域，p指向对象的引用计数减为0，系统会释放这块内存，此时q指向的对象不存在，此时q是一个空悬指针 </span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::shared_ptr&lt;int&gt; q = new int(20);</span><br><span class="line">test(q);	//p指向对象的引用计数为2</span><br><span class="line">*q = 18;	//正确，此时引用计数为1，不会释放内存</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="shared-ptr的操作"><a href="#shared-ptr的操作" class="headerlink" title="shared_ptr的操作"></a>shared_ptr的操作</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">shared_ptr&lt;T&gt; p;		//空智能指针，可以指向类型为T的对象</span><br><span class="line">p;						//将p用作判断条件，p如果有指向的对象，则返回true,否则false</span><br><span class="line">*p;						//解引用p。获取它指向的对象</span><br><span class="line">p-&gt;men;					//等价于(*p)-&gt;men</span><br><span class="line">p.get();				//返回一个指向p指向对象的内置指针</span><br><span class="line">swap(p,q);				//交换p,q中的指针</span><br><span class="line">p.swap(q);</span><br><span class="line"></span><br><span class="line">p = q;					//p指向q指向的对象</span><br><span class="line">p.unique();				//如果p指向对象的引用计数为1，则返回true,否则返回false</span><br><span class="line">p.use_count();			//返回p指向对象的引用计数</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="unique-ptr"><a href="#unique-ptr" class="headerlink" title="unique_ptr"></a>unique_ptr</h4><h5 id="unique-ptr的操作"><a href="#unique-ptr的操作" class="headerlink" title="unique_ptr的操作"></a>unique_ptr的操作</h5><p>​        与shared_ptr不同的是，某个时刻只能有一个unique_ptr指向一个给定的对象，当unique_ptr被销毁的时候，它指向的对象也会被释放。并且由于一个unique_ptr拥有它指向的对象，因此unique_ptr不支持普通的拷贝或赋值操作（不能有两个unique_ptr指向同一个对象）。</p>
-<p>​        不过虽然不能拷贝和赋值，但是我们可以使用reset和release将指针的所有权从一个(非const)unique_ptr转移给另外一个unique_ptr。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">std::unique_ptr&lt;string&gt; p1(new string(&quot;ssssss&quot;));</span><br><span class="line">std::unique_ptr&lt;string&gt; p2(p1.release);				//将所有权从p1转移到了p2</span><br><span class="line">std::unique_ptr&lt;string&gt; p3(new string(&quot;qqqqqq&quot;));</span><br><span class="line">p2.reset(p3.release());								//release将p3置为空，并且返回unique_ptr当前保存的指针。reset接收一个可选的指针参数，令													p2指向了p3之前的对象。并且释放了p2原来指向的内存</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="给unique-ptr传递删除器"><a href="#给unique-ptr传递删除器" class="headerlink" title="给unique_ptr传递删除器"></a>给unique_ptr传递删除器</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">void f(destination &amp;d)</span><br><span class="line">&#123;</span><br><span class="line">	connection  c = connect(&amp;d);		//打开连接</span><br><span class="line">	//当p被销毁的时候，连接会关闭</span><br><span class="line">	unique_ptr&lt;connection,decltype(end_connection)*&gt; p(&amp;c,end_connection);</span><br><span class="line">	//使用连接</span><br><span class="line">	//（如果不使用删除器，且出现了异常而推出，则不会执行后面的关闭连接代码）</span><br><span class="line">	//当f退出时（即使是由于异常而退出），connection会被正确关闭</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="weak-ptr"><a href="#weak-ptr" class="headerlink" title="weak_ptr"></a>weak_ptr</h4><p>​        weak_ptr是一种不控制对象生存期的智能指针，它指向由一个shared_ptr管理的对象，当它绑定在一个shared_ptr的时候不会改变它的引用计数，因此不影响shared_ptr的释放。</p>
-<h5 id="weak-ptr的初始化"><a href="#weak-ptr的初始化" class="headerlink" title="weak_ptr的初始化"></a>weak_ptr的初始化</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::shared_ptr&lt;string&gt; p = make_shared&lt;string&gt;(10,&#x27;s&#x27;);</span><br><span class="line">std::weak_ptr&lt;string&gt; q(p);					//弱指针q绑定到p指针，p的引用计数不会改变</span><br></pre></td></tr></table></figure>
-
-<p>​        由于p的销毁，指向的对象可能已经不存在了，所以弱指针q不能直接访问指向的对象，而必须调用lock。此函数会检查weak_ptr指向的对象是否还存在，如果存在，则返回一个指向共享对象的shared_ptr。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if(std::shared_ptr&lt;string&gt; np = q.lock())</span><br><span class="line">&#123;</span><br><span class="line">	//如果q不存在，则np不指向对象，为false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="weak-ptr的作用"><a href="#weak-ptr的作用" class="headerlink" title="weak_ptr的作用"></a>weak_ptr的作用</h5><p>​        weak_ptr不控制对象的生命期，但是它知道对象是否还活着。如果对象还活着，那么它可以提升为有效的shared_ptr（提升操作通过lock()函数获取所管理对象的强引用指针），然后进行后面的操作；如果对象已经死了，提升会失败，返回一个空的shared_ptr。示例代码如下：</p>
-<p>​        同时weak_ptr还可以解决循环引用的问题。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;memory&gt;</span><br><span class="line"> </span><br><span class="line">using namespace std;</span><br><span class="line"> </span><br><span class="line">class Parent;</span><br><span class="line">class Child; </span><br><span class="line"> </span><br><span class="line">typedef shared_ptr&lt;Parent&gt; parent_ptr;</span><br><span class="line">typedef shared_ptr&lt;Child&gt; child_ptr; </span><br><span class="line"> </span><br><span class="line">class Parent</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">       ~Parent() &#123; </span><br><span class="line">              cout &lt;&lt; &quot;~Parent()&quot; &lt;&lt; endl; </span><br><span class="line">       &#125;</span><br><span class="line">public:</span><br><span class="line">       child_ptr children;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">class Child</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">       ~Child() &#123; </span><br><span class="line">              cout &lt;&lt; &quot;~Child()&quot; &lt;&lt; endl; </span><br><span class="line">       &#125;</span><br><span class="line">public:</span><br><span class="line">       parent_ptr parent;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">  parent_ptr father(new Parent);</span><br><span class="line">  child_ptr son(new Child);</span><br><span class="line"> </span><br><span class="line">  // 父子互相引用</span><br><span class="line">  father-&gt;children = son;</span><br><span class="line">  son-&gt;parent = father;</span><br><span class="line"> </span><br><span class="line">  cout &lt;&lt; father.use_count() &lt;&lt; endl;  // 引用计数为2</span><br><span class="line">  cout &lt;&lt; son.use_count() &lt;&lt; endl;     // 引用计数为2</span><br><span class="line"> </span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>​        如上代码，将在程序退出前，father的引用计数为2，son的计数也为2，退出时，shared_ptr所作操作就是简单的将计数减1，如果为0则释放，显然，这个情况下，引用计数不为0，于是造成father和son所指向的内存得不到释放，导致内存泄露。</p>
-<p>​        使用weak_ptr可以打破这样的循环引用。由于弱引用不更改引用计数，类似普通指针，只要把循环引用的一方使用弱引用，即可解除循环引用。</p>
-<p>​        以上述代码为例，只要把Child类的代码修改为如下即可</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Child</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">       ~Child() &#123; </span><br><span class="line">              cout &lt;&lt; &quot;~Child()&quot; &lt;&lt; endl; </span><br><span class="line">       &#125;</span><br><span class="line">public:</span><br><span class="line">       weak_ptr&lt;Parent&gt; parent; </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>​        最后值得一提的是，虽然通过弱引用指针可以有效的解除循环引用，但这种方式必须在能预见会出现循环引用的情况下才能使用，即这个仅仅是一种编译期的解决方案，如果程序在运行过程中出现了循环引用，还是会造成内存泄漏的。因此，不要认为只要使用了智能指针便能杜绝内存泄漏。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/12/01/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -829,9 +694,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-10-20 10:56:38 / 修改时间：15:02:55" itemprop="dateCreated datePublished" datetime="2022-10-20T10:56:38+08:00">2022-10-20</time>
+      <time title="创建时间：2022-10-20 10:56:38" itemprop="dateCreated datePublished" datetime="2022-10-20T10:56:38+08:00">2022-10-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-07 09:50:56" itemprop="dateModified" datetime="2023-03-07T09:50:56+08:00">2023-03-07</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -861,16 +732,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <h1 id="unsigned-int"><a href="#unsigned-int" class="headerlink" title="unsigned int"></a>unsigned int</h1><p>unsigned int 代表无符号整数,在16位系统中一个int能存储的数据的范围为：-32768<del>32767，而unsigned int能存储的数据范围则是0</del>65535，因为转换为负数以后会变成补码形式。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">vector&lt;<span class="type">int</span>&gt; a = &#123;<span class="number">2</span>&#125;;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i&lt; a.<span class="built_in">size</span>()<span class="number">-2</span>;i++)</span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;进入了for&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line">cout&lt;&lt;<span class="string">&quot;没有进入for&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>![image-20221020110239646](C:\Users\Bya\Desktop\image-20221020110239646.png</p>
-<p><img src="https://s2.loli.net/2022/10/20/wehF4O1GL8NPuDZ.png" alt="image-20221020110239646"></p>
-<p>理论上a.size()为1，不应该进入for循环当中，但是因为vector的size()的返回值为unsigned int的类型，所以a.size()-2的值实际为-1的补码111111111111……（计算机位数）。</p>
-<p>如果要使用上面for的形式，应该在a.size()的前面进行强转(int)。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">vector&lt;int&gt; a = &#123;2&#125;;</span><br><span class="line">for(int i = 0; i&lt; (int)a.size()-2;i++)</span><br><span class="line">&#123;</span><br><span class="line">    cout&lt;&lt;&quot;进入了for&quot;&lt;&lt;endl;</span><br><span class="line">    return;</span><br><span class="line">&#125;</span><br><span class="line">cout&lt;&lt;&quot;没有进入for&quot;&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s2.loli.net/2022/10/20/TjqukIHiMzwyf2o.png" alt="image-20221020110927850"></p>
-<h2 id="所以每次使用函数返回值的时候，都要注意函数返回值的类型，不能都当作有符号值进行处理，要进入源码里查看函数的返回类型，如果是无符号类型，要注意会不会出现负数的情况。"><a href="#所以每次使用函数返回值的时候，都要注意函数返回值的类型，不能都当作有符号值进行处理，要进入源码里查看函数的返回类型，如果是无符号类型，要注意会不会出现负数的情况。" class="headerlink" title="所以每次使用函数返回值的时候，都要注意函数返回值的类型，不能都当作有符号值进行处理，要进入源码里查看函数的返回类型，如果是无符号类型，要注意会不会出现负数的情况。"></a><strong>所以每次使用函数返回值的时候，都要注意函数返回值的类型，不能都当作有符号值进行处理，要进入源码里查看函数的返回类型，如果是无符号类型，要注意会不会出现负数的情况。</strong></h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/20/unsigned-int/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -924,9 +793,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-10-12 17:28:28 / 修改时间：17:42:42" itemprop="dateCreated datePublished" datetime="2022-10-12T17:28:28+08:00">2022-10-12</time>
+      <time title="创建时间：2022-10-12 17:28:28" itemprop="dateCreated datePublished" datetime="2022-10-12T17:28:28+08:00">2022-10-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-07 09:50:49" itemprop="dateModified" datetime="2023-03-07T09:50:49+08:00">2023-03-07</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -958,13 +833,14 @@
           <h1 id="inline"><a href="#inline" class="headerlink" title="inline"></a>inline</h1><h2 id="inline的工作原理"><a href="#inline的工作原理" class="headerlink" title="inline的工作原理"></a>inline的工作原理</h2><p>inline是一个关键字，通常在函数返回值前加上关键字inline,即把函数指定为内联函数。</p>
 <p>inline不是在调用时发生控制转移关系，普通的函数调用是跳转到函数入口地址，然后对其进行压栈来进行调用，其中还要进行现场保护和现场恢复，都要消耗大量的栈空间。</p>
 <p>而内联函数则是把函数体<strong>镶嵌</strong>在调用该函数的语句块中，当出现要调用内联函数的语句时，系统将直接用内联函数体来替换调用语句，节省了大量的栈空间。</p>
-<h2 id="inline的优点和缺点"><a href="#inline的优点和缺点" class="headerlink" title="inline的优点和缺点"></a>inline的优点和缺点</h2><p>内联函数是以代码膨胀复制为代价的。</p>
-<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>可以提高函数的执行效率，减少栈空间的使用</p>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>会使代码量大大增加，内存消耗会增加。</p>
-<p>以下情况不宜使用内联：<br>1）如果函数体内的代码比较长，使用内联将导致内存消耗代价较高。<br>2）如果函数体内出现循环，那么执行函数体内代码的时间要比函数调用的开销大。</p>
-<p>以下情况适宜使用内联<br>对于只有几条语句的小函数来说，与函数的调用、返回有关的准备和收尾工作的代码往往比函数体本身的代码要大得多。因此，对于这类简单的、使用频繁的小函数，将之说明为内联函数可提高运行效率。</p>
-<h2 id="inline的使用"><a href="#inline的使用" class="headerlink" title="inline的使用"></a>inline的使用</h2><p>inline是对编译器的建议，编译器不一定会采用，编译器会判断当前函数是否应该使用inline关键字，如果使用inline关键字后，能提高系统的处理效率，则编译器会使用。如果函数体代码量过大，展开以后会降低系统的处理效率，则编译器会忽视关键字。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/12/inline/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1018,9 +894,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-10-12 10:10:16 / 修改时间：14:37:08" itemprop="dateCreated datePublished" datetime="2022-10-12T10:10:16+08:00">2022-10-12</time>
+      <time title="创建时间：2022-10-12 10:10:16" itemprop="dateCreated datePublished" datetime="2022-10-12T10:10:16+08:00">2022-10-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-07 09:52:04" itemprop="dateModified" datetime="2023-03-07T09:52:04+08:00">2023-03-07</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1049,25 +931,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="左值和右值"><a href="#左值和右值" class="headerlink" title="左值和右值"></a>左值和右值</h1><h2 id="左值引用"><a href="#左值引用" class="headerlink" title="左值引用"></a>左值引用</h2><p>左值引用又称为有址引用，以前C++的对于左值的定义是能出现在“=”的左边的变量称为左值。如：</p>
-<p>int x = 4;//x是一个左值</p>
-<p>constexpr int y = 3;//y不是一个左值，因为y = 4是非法的。</p>
-<p>但是现在把分配了内存空间的变量都称为左值，而y是分配了空间的，所以y也是左值。</p>
-<p>左值引用一般是T&amp;获得。</p>
-<h2 id="右值引用"><a href="#右值引用" class="headerlink" title="右值引用"></a>右值引用</h2><p>右值引用又称为无址引用，由T&amp;&amp;来获取。不过不是所有的T&amp;&amp;都是右值引用。</p>
-<p>在由类型推导的时候，T&amp;&amp;表示转发引用，即能接收任何形式的值，接收了左值就表现出左值，接收了右值即表现为右值。</p>
-<p>例如：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span>&amp;&amp; c = <span class="string">&quot;sdad&quot;</span>;<span class="comment">//这个实际上是个左值，因为涉及到类型推导</span></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">test</span><span class="params">(T&amp;&amp; a)</span></span>&#123;&#125;<span class="comment">//这个a也不代表右值引用，而是转发引用</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>要注意的是：在函数调用中，T&amp;&amp; 形参的值表现为接收到的值的属性。但是在函数内部，局部变量的值统一表现为左值。这里不得不提到std::move和std::forward了</strong></p>
-<h1 id="std-move和std-forward"><a href="#std-move和std-forward" class="headerlink" title="std::move和std::forward"></a>std::move和std::forward</h1><h2 id="std-move"><a href="#std-move" class="headerlink" title="std::move"></a>std::move</h2><p>std::move(val)表示的是将val无条件的转化为右值，从而方便的使用移动语义，move是将对象的状态或者所有权从一个对象转移到另一个对象，只是转移，没有内存拷贝。但如果是基本类型或数组，则仍然会发生拷贝构造。</p>
-<h2 id="std-forward"><a href="#std-forward" class="headerlink" title="std::forward"></a>std::forward</h2><p>std::forward(val)称为完美转发，他会保持参数的左值和右值特征，它是为转发而生的，不管参数是T&amp;&amp;这种未定的引用还是明确的左值引用或者右值引用，它会按照参数本来的类型转发。</p>
-<p>下面例子说明他两的区别</p>
-<h2 id="例子说明"><a href="#例子说明" class="headerlink" title="例子说明"></a>例子说明</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">printl</span><span class="params">(<span class="type">int</span>&amp; a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;打印左值&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printr</span><span class="params">(<span class="type">int</span>&amp;&amp; a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;打印右值&quot;</span>&lt;&lt;endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">test</span><span class="params">(T&amp;&amp; arg)</span><span class="comment">//转发引用来接收参数</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printl</span>(arg);<span class="comment">//函数内部的局部变量是左值特性</span></span><br><span class="line">    <span class="comment">//printr(arg);会报错，因为函数内部的局部变量会自动变为左值</span></span><br><span class="line">    <span class="comment">//printl(std::move(arg));会报错，move将其转化为了右值</span></span><br><span class="line">    <span class="built_in">printr</span>(std::<span class="built_in">move</span>(arg));</span><br><span class="line">    <span class="built_in">printl</span>(std::forward&lt;T&gt;(arg));</span><br><span class="line">    <span class="comment">//printr(std::forward&lt;T&gt;(arg));会报错，因为arg的类型是左值，forward会保留其左值特性</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">3</span>;</span><br><span class="line">    <span class="built_in">test</span>(a);<span class="comment">//传入左值</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//打印左值</span></span><br><span class="line"><span class="comment">//打印右值</span></span><br><span class="line"><span class="comment">//打印左值</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">test</span><span class="params">(T&amp;&amp; arg)</span><span class="comment">//转发引用来接收参数</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printl</span>(arg);</span><br><span class="line">    <span class="comment">//printr(arg);会报错，因为函数内部的局部变量会自动变为左值</span></span><br><span class="line">    <span class="comment">//printl(std::move(arg));会报错，move将其转化为了右值</span></span><br><span class="line">    <span class="built_in">printr</span>(std::<span class="built_in">move</span>(arg));</span><br><span class="line">    <span class="comment">//printl(std::forward&lt;T&gt;(arg));</span></span><br><span class="line">    <span class="built_in">printr</span>(std::forward&lt;T&gt;(arg));会报错，因为arg的类型是左值，forward会保留其左值特性</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">test</span>(<span class="number">3</span>);<span class="comment">//传入右值</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//打印左值</span></span><br><span class="line"><span class="comment">//打印右值</span></span><br><span class="line"><span class="comment">//打印右值</span></span><br></pre></td></tr></table></figure>
-
-
+          <h1 id="左值和右值"><a href="#左值和右值" class="headerlink" title="左值和右值"></a>左值和右值</h1>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/12/%E5%B7%A6%E5%80%BC%E5%8F%B3%E5%80%BC/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1121,9 +993,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-10-11 10:06:55 / 修改时间：10:24:37" itemprop="dateCreated datePublished" datetime="2022-10-11T10:06:55+08:00">2022-10-11</time>
+      <time title="创建时间：2022-10-11 10:06:55" itemprop="dateCreated datePublished" datetime="2022-10-11T10:06:55+08:00">2022-10-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-07 09:50:19" itemprop="dateModified" datetime="2023-03-07T09:50:19+08:00">2023-03-07</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1153,14 +1031,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <h1 id="c-的分区"><a href="#c-的分区" class="headerlink" title="c++的分区"></a>c++的分区</h1><p>在内存中，一段程序分为四个区，分别为代码区，全局区，堆和栈。</p>
-<h2 id="代码区"><a href="#代码区" class="headerlink" title="代码区"></a>代码区</h2><p>主要存放程序代码的区域，里面存放的是编译后的机器指令，也就是汇编代码。</p>
-<h2 id="全局区"><a href="#全局区" class="headerlink" title="全局区"></a>全局区</h2><p>全局区里面分为bss段，data段，和rodata段</p>
-<h3 id="bss"><a href="#bss" class="headerlink" title="bss"></a>bss</h3><p>bss段主要存放未经过初始化的全局变量和静态变量</p>
-<h3 id="data"><a href="#data" class="headerlink" title="data"></a>data</h3><p>data段主要存放经过初始化的全局变量和静态变量，其中静态变量在程序刚开始运行时就会进入初始化，所以未初始化过的静态变量在程序运行后便会进入bss段中，而且静态变量的初始化只会执行一次。</p>
-<h3 id="rodata段"><a href="#rodata段" class="headerlink" title="rodata段"></a>rodata段</h3><p>rodata段主要存放常量，称为常量区。用于存放各类常量，例如const、字面量、#define </p>
-<h2 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h2><p>new出来的变量进入堆区中。需要自己生成与释放。若不释放，则可能由操作系统回收。堆的申请一般比较慢，因为系统需要查找足够大小的内存空间。堆的内存空间一般是不连续的。</p>
-<h2 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h2><p>类型符前有auto（因为局部变量之前auto一般都会省略，auto的含义是指此变量进入栈后，会被自动回收，不需要程序员自己释放，会保持栈的平衡，所以称为auto类型）的变量进入栈区，也就是局部变量和函数等。存放函数调用的相关的参数。由于栈的空间一般是连续的，所以栈的内存申请比较快，由系统自动分配，内存空间一般也是连续的。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/11/cpp%E7%9A%84%E5%88%86%E5%8C%BA/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1214,9 +1092,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-06-08 16:01:07 / 修改时间：18:09:33" itemprop="dateCreated datePublished" datetime="2022-06-08T16:01:07+08:00">2022-06-08</time>
+      <time title="创建时间：2022-06-08 16:01:07" itemprop="dateCreated datePublished" datetime="2022-06-08T16:01:07+08:00">2022-06-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-07 09:51:48" itemprop="dateModified" datetime="2023-03-07T09:51:48+08:00">2023-03-07</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1248,30 +1132,14 @@
           <h1 id="引用的其他用法"><a href="#引用的其他用法" class="headerlink" title="引用的其他用法"></a>引用的其他用法</h1><h2 id="引用做函数的返回值"><a href="#引用做函数的返回值" class="headerlink" title="引用做函数的返回值"></a>引用做函数的返回值</h2><h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ul>
 <li>不能用局部变量作为引用的返回值</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span>&amp; <span class="title">test01</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> a = <span class="number">10</span>;<span class="comment">//局部变量，存放在四区中的栈区</span></span><br><span class="line">	<span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> &amp;ref = <span class="built_in">test01</span>();</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;ref=&quot;</span> &lt;&lt; ref &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;ref=&quot;</span> &lt;&lt; ref &lt;&lt; endl;</span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>结果如下：</p>
-<p><img src="https://s2.loli.net/2022/06/08/JRs3ZQ6kFirX1Ix.png" alt="image-20220608165534283"></p>
-<p>因为局部变量在函数执行完以后便会销毁，所以引用返回的值并不是真正的局部变量的值，但是编译器会做一次保留，所以第一次输出是准确的，第二次乱码了。<strong>所以不能返回局部变量的引用</strong>。</p>
-<ul>
-<li>函数的调用可以作为左值</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span>&amp; <span class="title">test02</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">static</span> <span class="type">int</span> a = <span class="number">10</span>;<span class="comment">//静态变量，存储在全局区</span></span><br><span class="line">	<span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> &amp;ref = <span class="built_in">test02</span>();</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;ref=&quot;</span> &lt;&lt; ref &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;ref=&quot;</span> &lt;&lt; ref &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">test02</span>() = <span class="number">100</span>;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;ref=&quot;</span> &lt;&lt; ref &lt;&lt; endl;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;ref=&quot;</span> &lt;&lt; ref &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s2.loli.net/2022/06/08/j8f5HXawImsvoWB.png" alt="image-20220608173648369"></p>
-<p>如果函数的返回值是引用，则函数的调用可以作为左值。由于ref是a的别名，所以在test02() = 100时，相当于a=100，则ref=100。</p>
-<h2 id="引用的本质"><a href="#引用的本质" class="headerlink" title="引用的本质"></a>引用的本质</h2><p>==<strong>引用的本质在c++内部实现是一个指针常量</strong>==</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line">    <span class="type">int</span> &amp; ref = a;</span><br><span class="line">    <span class="comment">//自动转换为 int* const ref = &amp;a</span></span><br><span class="line">    ref = <span class="number">20</span>;<span class="comment">//内部发现ref是引用，自动帮我们转换为: *ref = 20</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>由于指针常量是指针指向不可改，这也说明了为什么一个别名不能同时指向两个变量。当你调用一个引用的时候，编译器都会自动进行一个解引用。如cout&lt;&lt;ref;则编译器会自动转换为cout&lt;&lt;*ref;</p>
-<h2 id="常量引用"><a href="#常量引用" class="headerlink" title="常量引用"></a>常量引用</h2><p>作用：主要用来修饰形参，防止误操作，在函数形参列表里，可以加<strong>const</strong>修饰形参，防止形参改变实参。</p>
-<p>如：const int &amp;ref = 10;//编译器将代码修改  int temp =10;const int &amp;ref =temp;</p>
-<p>如果是int &amp;ref = 10,则会报错，因为引用必须印一块合法的内存空间，而10不是一块合法的内存空间。</p>
-<p>其实本质就是变换成了常量指针常量。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">showValue</span><span class="params">(<span class="type">const</span> <span class="type">int</span> &amp;a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	a = <span class="number">100</span>;</span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;a=&quot;</span> &lt;&lt; a &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">int</span> b = <span class="number">5</span>;</span><br><span class="line">	<span class="built_in">showValue</span>(b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>编译器会报错，不允许修改a，因为a是一个常量指针常量。这样子可以防止函数修改形参，导致实参改变。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/06/08/%E5%BC%95%E7%94%A8%E7%9A%84%E5%85%B6%E4%BB%96%E7%94%A8%E6%B3%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
